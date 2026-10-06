@@ -64,11 +64,31 @@ function Index() {
             className="photo opacity-90 [mask-image:linear-gradient(to_right,transparent,black_50%)]"
           />
         </picture>
-        <div className="site-container relative grid items-center py-10 sm:py-14 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
+        {/* Below lg: the factory fills the hero behind the copy, under a left-to-right forest overlay. */}
+        <picture className="absolute inset-x-0 bottom-1 top-0 lg:hidden">
+          <source media="(min-width: 1024px)" srcSet={BLANK_GIF} />
+          <img
+            src={images.factoryHeroMobile}
+            alt=""
+            width={780}
+            height={975}
+            fetchPriority="high"
+            className="photo object-[60%_60%]"
+          />
+        </picture>
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--forest)_92%,transparent)_0%,color-mix(in_oklab,var(--forest)_78%,transparent)_60%,color-mix(in_oklab,var(--forest)_35%,transparent)_100%)] lg:hidden"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--forest)_55%,transparent)_0%,color-mix(in_oklab,var(--forest)_40%,transparent)_55%,transparent_80%)] lg:hidden"
+        />
+        <div className="site-container relative grid items-center pb-32 pt-12 sm:pb-40 sm:pt-16 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
           <div className="lg:col-span-6">
             <p className="kicker !text-white/80">Pipe manufacturer · Ambala, Haryana</p>
             <h1 className="h-hero mt-6">Pipe systems for plumbing, drainage and agriculture</h1>
-            <p className="lede mt-6 text-white/75">
+            <p className="lede mt-6 text-white/90 lg:text-white/75">
               Acoflex manufactures CPVC, UPVC, PPR-C, SWR, drainage and agricultural pipes at its
               plant in Ambala, Haryana.
             </p>
@@ -84,18 +104,7 @@ function Index() {
             </div>
           </div>
         </div>
-        <picture className="lg:hidden">
-          <source media="(min-width: 1024px)" srcSet={BLANK_GIF} />
-          <img
-            src={images.factoryWideMobile}
-            alt=""
-            width={800}
-            height={473}
-            fetchPriority="high"
-            className="aspect-[16/9] w-full object-cover"
-          />
-        </picture>
-        <div className="h-1 bg-gold" />
+        <div className="relative h-1 bg-gold" />
       </section>
 
       {/* Strengths */}

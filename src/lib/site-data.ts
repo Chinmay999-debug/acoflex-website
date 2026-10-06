@@ -1,6 +1,7 @@
 import logo from "@/assets/acoflex-logo.png";
 import factoryWide from "@/assets/bakcground-image-factory.webp";
 import factoryWideMobile from "@/assets/bakcground-image-factory-mobile.webp";
+import factoryHeroMobile from "@/assets/factory-hero-mobile.webp";
 import testing from "@/assets/pipe-testing.webp";
 import testingMobile from "@/assets/pipe-testing-mobile.webp";
 import testingLine from "@/assets/pipe-testing-2.webp";
@@ -24,6 +25,7 @@ export const images = {
   logo,
   factoryWide,
   factoryWideMobile,
+  factoryHeroMobile,
   testing,
   testingMobile,
   testingLine,
