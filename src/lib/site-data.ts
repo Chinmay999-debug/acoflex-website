@@ -390,7 +390,12 @@ export const processSteps: {
   mobileImage?: string;
   diagram?: "calibration" | "marking";
 }[] = [
-  { name: "Extrusion", note: "Automated extrusion lines", image: factoryWide, mobileImage: factoryWideMobile },
+  {
+    name: "Extrusion",
+    note: "Automated extrusion lines",
+    image: factoryWide,
+    mobileImage: factoryWideMobile,
+  },
   {
     name: "Calibration and cooling",
     note: "Sizing the pipe as it is formed",

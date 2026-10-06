@@ -11,7 +11,7 @@ import {
   Warehouse,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CategoryCard, EnquiryBand, RouteFrame, SectionHeading } from "@/components/site";
+import { CategoryCard, EnquiryBand, SectionHeading } from "@/components/site";
 import {
   allProducts,
   categories,
@@ -49,7 +49,7 @@ function Index() {
   // Home shows the later stages: each has its own photo not used elsewhere on the page.
   const highlightSteps = processSteps.slice(3);
   return (
-    <RouteFrame>
+    <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-forest text-white">
         <div className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
@@ -270,6 +270,6 @@ function Index() {
       </section>
 
       <EnquiryBand />
-    </RouteFrame>
+    </>
   );
 }

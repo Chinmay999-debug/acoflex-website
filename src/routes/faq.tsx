@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { EnquiryBand, PageHero, RouteFrame } from "@/components/site";
+import { EnquiryBand, PageHero } from "@/components/site";
 import { faqs } from "@/lib/site-data";
 
 export const Route = createFileRoute("/faq")({
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/faq")({
 
 function Faq() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Frequently asked questions"
         intro="Answers to common questions about our products, testing and supply."
@@ -64,6 +64,6 @@ function Faq() {
         </Accordion>
       </section>
       <EnquiryBand />
-    </RouteFrame>
+    </>
   );
 }

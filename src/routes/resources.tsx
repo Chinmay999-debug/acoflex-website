@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, FileText, HelpCircle } from "lucide-react";
-import { PageHero, RouteFrame } from "@/components/site";
+import { PageHero } from "@/components/site";
 
 export const Route = createFileRoute("/resources")({
   head: () => ({
@@ -60,7 +60,7 @@ function Resources() {
     },
   ];
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Resources"
         intro="Product information and the right way to request technical documents for your project."
@@ -78,6 +78,6 @@ function Resources() {
           </div>
         ))}
       </section>
-    </RouteFrame>
+    </>
   );
 }

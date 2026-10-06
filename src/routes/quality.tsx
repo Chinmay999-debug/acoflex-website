@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { EnquiryBand, PageHero, RouteFrame } from "@/components/site";
+import { EnquiryBand, PageHero } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images } from "@/lib/site-data";
 
@@ -42,7 +42,7 @@ const stages = [
 
 function Quality() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Quality"
         intro="Quality checks run alongside production at the Acoflex plant, supported by an in-house testing lab."
@@ -107,6 +107,6 @@ function Quality() {
       </section>
 
       <EnquiryBand />
-    </RouteFrame>
+    </>
   );
 }

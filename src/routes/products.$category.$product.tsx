@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check, FileText, MessageSquare } from "lucide-react";
-import { Breadcrumbs, EnquiryBand, ProductCard, RouteFrame } from "@/components/site";
+import { Breadcrumbs, EnquiryBand, ProductCard } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { type Category, type Product, categories, getCategory, getProduct } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/products/$category/$product")({
     ],
   }),
   notFoundComponent: () => (
-    <RouteFrame>
+    <>
       <div className="site-container section-y">
         <h1 className="h-page">Product not found</h1>
         <p className="body-copy mt-4 text-muted-foreground">
@@ -46,18 +46,18 @@ export const Route = createFileRoute("/products/$category/$product")({
           Browse all products <ArrowRight />
         </Link>
       </div>
-    </RouteFrame>
+    </>
   ),
   component: ProductDetail,
 });
 
 function ProductDetail() {
-  const { category, product } = Route.useLoaderData() as { category: Category, product: Product };
+  const { category, product } = Route.useLoaderData() as { category: Category; product: Product };
   const siblings = category.products.filter((item: any) => item.slug !== product.slug);
   const otherCategories = categories.filter((item) => item.slug !== category.slug);
 
   return (
-    <RouteFrame>
+    <>
       <div className="border-b border-border bg-secondary">
         <div className="site-container py-4">
           <Breadcrumbs
@@ -297,6 +297,6 @@ function ProductDetail() {
       </section>
 
       <EnquiryBand />
-    </RouteFrame>
+    </>
   );
 }

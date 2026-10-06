@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Factory, FlaskConical, Package, Warehouse } from "lucide-react";
-import { EnquiryBand, PageHero, RouteFrame, SectionHeading } from "@/components/site";
+import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images, processSteps } from "@/lib/site-data";
 
@@ -121,7 +121,7 @@ function ProcessDiagram({ kind }: { kind: "calibration" | "marking" }) {
 
 function Manufacturing() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Manufacturing"
         intro="Production at the Acoflex plant — from raw material storage through extrusion, calibration, marking and testing to finished goods storage."
@@ -203,6 +203,6 @@ function Manufacturing() {
       <div className="pt-16 lg:pt-24">
         <EnquiryBand />
       </div>
-    </RouteFrame>
+    </>
   );
 }

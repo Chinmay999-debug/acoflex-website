@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Megaphone, PackageCheck, Tag, Truck } from "lucide-react";
-import { PageHero, RouteFrame, SectionHeading } from "@/components/site";
+import { PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { dealerBenefits, images } from "@/lib/site-data";
 
@@ -29,7 +29,7 @@ const benefitIcons = [Tag, PackageCheck, Truck, Megaphone] as const;
 
 function Dealers() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Dealers and distributors"
         intro="Acoflex welcomes enquiries from wholesalers, distributors and project buyers interested in supplying its pipe systems."
@@ -86,6 +86,6 @@ function Dealers() {
           </div>
         </div>
       </section>
-    </RouteFrame>
+    </>
   );
 }

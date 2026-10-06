@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { EnquiryBand, PageHero, ProductCard, RouteFrame, TankMark } from "@/components/site";
+import { EnquiryBand, PageHero, ProductCard, TankMark } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { categories, images } from "@/lib/site-data";
 
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/products/")({
 
 function Products() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Our products"
         intro="Pipe systems for plumbing, drainage and agriculture, organised by application. Choose a category to see the full range."
@@ -98,6 +98,6 @@ function Products() {
         title="Not sure which pipe you need?"
         copy="Share your application and the team will recommend the right product and specification."
       />
-    </RouteFrame>
+    </>
   );
 }

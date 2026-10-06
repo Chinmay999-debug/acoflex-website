@@ -6,16 +6,16 @@ Use the existing website **https://acoflexpvc.com/** as the primary source for A
 
 Study the existing website carefully and use its:
 
-* Company information
-* Product categories and descriptions
-* Manufacturing information
-* Quality/testing information
-* Infrastructure information
-* Dealer/distributor information
-* Services
-* FAQs
-* Contact information
-* Existing brand identity
+- Company information
+- Product categories and descriptions
+- Manufacturing information
+- Quality/testing information
+- Infrastructure information
+- Dealer/distributor information
+- Services
+- FAQs
+- Contact information
+- Existing brand identity
 
 Do not copy the existing website's design. Reimagine the entire experience.
 
@@ -29,15 +29,15 @@ Make it feel like a serious, established, technology-driven manufacturing brand.
 
 You decide:
 
-* Color palette
-* Typography
-* Layout
-* Visual hierarchy
-* Animation style
-* Section structure
-* Image treatment
-* Navigation style
-* Interactions
+- Color palette
+- Typography
+- Layout
+- Visual hierarchy
+- Animation style
+- Section structure
+- Image treatment
+- Navigation style
+- Interactions
 
 Prioritize excellent design, spacing, typography, visual storytelling and responsiveness.
 
@@ -51,17 +51,17 @@ Create a complete website, not just a landing page.
 
 Include appropriate pages/sections based on the information available on the existing Acoflex website, including:
 
-* Home
-* About
-* Products
-* Product detail pages
-* Manufacturing
-* Quality / Technology
-* Infrastructure
-* Dealer / Distributor
-* Resources
-* Contact
-* FAQ
+- Home
+- About
+- Products
+- Product detail pages
+- Manufacturing
+- Quality / Technology
+- Infrastructure
+- Dealer / Distributor
+- Resources
+- Contact
+- FAQ
 
 You can improve or reorganize the information architecture if you think it creates a better user experience.
 
@@ -71,15 +71,15 @@ Products must be structured dynamically rather than hard-coded into individual p
 
 Create a reusable product system with:
 
-* Categories
-* Products
-* Product descriptions
-* Images
-* Features
-* Applications
-* Specifications
-* Technical documents
-* Related products
+- Categories
+- Products
+- Product descriptions
+- Images
+- Features
+- Applications
+- Specifications
+- Technical documents
+- Related products
 
 Use the existing Acoflex website for the initial product content.
 
@@ -93,22 +93,22 @@ Create an `/admin` area where the Acoflex team can manage the website without ed
 
 The admin should eventually allow them to change:
 
-* Homepage headings
-* Descriptions
-* Banners
-* Images
-* Videos
-* Product content
-* Product images
-* Product specifications
-* Manufacturing content
-* Quality content
-* Infrastructure content
-* FAQs
-* Dealer information
-* Resources / PDFs
-* Contact information
-* SEO metadata
+- Homepage headings
+- Descriptions
+- Banners
+- Images
+- Videos
+- Product content
+- Product images
+- Product specifications
+- Manufacturing content
+- Quality content
+- Infrastructure content
+- FAQs
+- Dealer information
+- Resources / PDFs
+- Contact information
+- SEO metadata
 
 They should also be able to add, edit, publish/unpublish and delete products.
 
@@ -118,11 +118,11 @@ Create a clean, professional CMS dashboard rather than a basic CRUD interface.
 
 Create a media management system so administrators can upload and manage:
 
-* Images
-* Videos
-* PDFs
-* Product documents
-* Certificates
+- Images
+- Videos
+- PDFs
+- Product documents
+- Certificates
 
 Use Supabase Storage.
 
@@ -130,9 +130,9 @@ Use Supabase Storage.
 
 Add forms for:
 
-* Contact
-* Request a Quote
-* Dealer/Distributor enquiry
+- Contact
+- Request a Quote
+- Dealer/Distributor enquiry
 
 Store submissions in Supabase and make them accessible from the admin panel.
 
@@ -148,14 +148,14 @@ Closed
 
 Use Supabase for:
 
-* Database
-* Authentication
-* Storage
-* Admin users
-* Website content
-* Products
-* Media
-* Leads
+- Database
+- Authentication
+- Storage
+- Admin users
+- Website content
+- Products
+- Media
+- Leads
 
 Structure the database cleanly so the website can be expanded later.
 

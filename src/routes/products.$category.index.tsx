@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
-import { EnquiryBand, PageHero, ProductCard, RouteFrame, TankMark } from "@/components/site";
+import { EnquiryBand, PageHero, ProductCard, TankMark } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { type Category, categories, getCategory } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/products/$category/")({
     ],
   }),
   notFoundComponent: () => (
-    <RouteFrame>
+    <>
       <div className="site-container section-y">
         <h1 className="h-page">Category not found</h1>
         <p className="body-copy mt-4 text-muted-foreground">
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/products/$category/")({
           Browse all products <ArrowRight />
         </Link>
       </div>
-    </RouteFrame>
+    </>
   ),
   component: CategoryPage,
 });
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/products/$category/")({
 function CategoryPage() {
   const category = Route.useLoaderData() as Category;
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title={category.name}
         intro={category.description}
@@ -135,6 +135,6 @@ function CategoryPage() {
 
       {/* The coming-soon panel is already a dark block, so use the light band below it. */}
       <EnquiryBand tone={category.comingSoon ? "light" : "dark"} />
-    </RouteFrame>
+    </>
   );
 }

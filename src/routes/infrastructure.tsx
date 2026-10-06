@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { EnquiryBand, PageHero, RouteFrame } from "@/components/site";
+import { EnquiryBand, PageHero } from "@/components/site";
 import { images } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +47,7 @@ const facilities = [
 
 function Infrastructure() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Infrastructure"
         intro="The Acoflex plant brings extrusion, testing and storage facilities together at one site in Ambala, Haryana."
@@ -81,6 +81,6 @@ function Infrastructure() {
         </div>
       </section>
       <EnquiryBand />
-    </RouteFrame>
+    </>
   );
 }

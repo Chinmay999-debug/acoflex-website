@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Building2, Sprout, Wrench } from "lucide-react";
-import { EnquiryBand, PageHero, RouteFrame, SectionHeading } from "@/components/site";
+import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { categories, images, services, strengths } from "@/lib/site-data";
 
@@ -45,7 +45,7 @@ const markets = [
 
 function About() {
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="About Acoflex"
         intro="Acoflex manufactures plumbing, drainage and agriculture pipe systems at its plant in Barara, Ambala, Haryana."
@@ -156,6 +156,6 @@ function About() {
       <div className="pt-16 lg:pt-24">
         <EnquiryBand />
       </div>
-    </RouteFrame>
+    </>
   );
 }

@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { PageHero, RouteFrame } from "@/components/site";
+import { PageHero } from "@/components/site";
 import { contact } from "@/lib/site-data";
 
 export const Route = createFileRoute("/contact")({
@@ -57,7 +57,7 @@ function Contact() {
   }
 
   return (
-    <RouteFrame>
+    <>
       <PageHero
         title="Contact us"
         intro="For product information, bulk or project supply and dealership enquiries, send us a short brief and the team will respond."
@@ -206,6 +206,6 @@ function Contact() {
           </div>
         </aside>
       </section>
-    </RouteFrame>
+    </>
   );
 }
