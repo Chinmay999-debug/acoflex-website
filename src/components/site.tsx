@@ -8,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   categories,
   contact,
@@ -26,6 +25,9 @@ export function Brand({ className }: { className?: string }) {
       <img
         src={images.logo}
         alt="Acoflex — Sustainable Solutions"
+        width={400}
+        height={289}
+        decoding="async"
         className={cn("h-14 w-auto object-contain", className)}
       />
     </Link>
@@ -93,15 +95,15 @@ function MobileMenu() {
     { label: "Contact", to: "/contact" },
   ] as const;
 
-  // Lock body scroll when menu is open
+  // Lock body scroll and allow Escape to close while the menu is open
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
@@ -112,23 +114,31 @@ function MobileMenu() {
         size="icon"
         className="text-white hover:bg-white/10 hover:text-white lg:hidden"
         aria-label="Open navigation"
+        aria-expanded={open}
+        aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
       >
         <Menu className="!size-6" />
       </Button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 lg:hidden"
-          onClick={() => setOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-forest p-0 text-white shadow-2xl outline-none transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto border-l border-white/10",
-          open ? "translate-x-0" : "translate-x-full",
+          "fixed inset-0 z-50 bg-black/70 transition-opacity duration-300 lg:hidden",
+          open ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Hidden with `invisible` once the slide-out finishes so closed links can't be focused or tapped. */}
+      <div
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation"
+        className={cn(
+          "fixed inset-y-0 right-0 z-50 w-full max-w-sm overflow-y-auto overscroll-contain border-l border-white/10 bg-forest p-0 text-white shadow-2xl outline-none transition-[transform,visibility] duration-300 ease-out will-change-transform lg:hidden",
+          open ? "visible translate-x-0" : "invisible translate-x-full",
         )}
       >
         <div className="flex items-center justify-between border-b border-white/10 py-4 pl-6 pr-4">

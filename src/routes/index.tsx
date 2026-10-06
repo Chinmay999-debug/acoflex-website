@@ -42,6 +42,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const BLANK_GIF = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+
 const strengthIcons = [Factory, FlaskConical, Warehouse, FileText] as const;
 const benefitIcons = [Tag, PackageCheck, Truck, Megaphone] as const;
 
@@ -52,15 +54,16 @@ function Index() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-forest text-white">
-        <div className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
+        {/* Desktop and mobile heroes each use a 1px placeholder outside their breakpoint so only one photo downloads. */}
+        <picture className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
+          <source media="(min-width: 1024px)" srcSet={images.factoryWide} />
           <img
-            srcSet={`${images.factoryWide} 1024w`}
-            sizes="(min-width: 1024px) 58vw, 1px"
-            src={images.factoryWide}
+            src={BLANK_GIF}
             alt="Acoflex pipe extrusion lines on the factory floor"
+            fetchPriority="high"
             className="photo opacity-90 [mask-image:linear-gradient(to_right,transparent,black_50%)]"
           />
-        </div>
+        </picture>
         <div className="site-container relative grid items-center py-10 sm:py-14 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
           <div className="lg:col-span-6">
             <p className="kicker !text-white/80">Pipe manufacturer · Ambala, Haryana</p>
@@ -81,12 +84,17 @@ function Index() {
             </div>
           </div>
         </div>
-        <img
-          src={images.factoryWideMobile}
-          alt=""
-          fetchPriority="high"
-          className="aspect-[16/9] w-full object-cover lg:hidden"
-        />
+        <picture className="lg:hidden">
+          <source media="(min-width: 1024px)" srcSet={BLANK_GIF} />
+          <img
+            src={images.factoryWideMobile}
+            alt=""
+            width={800}
+            height={473}
+            fetchPriority="high"
+            className="aspect-[16/9] w-full object-cover"
+          />
+        </picture>
         <div className="h-1 bg-gold" />
       </section>
 

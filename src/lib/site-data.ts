@@ -1,4 +1,4 @@
-import logo from "@/assets/Acoflex-Logo-white-png-scaled.png";
+import logo from "@/assets/acoflex-logo.png";
 import factoryWide from "@/assets/bakcground-image-factory.webp";
 import factoryWideMobile from "@/assets/bakcground-image-factory-mobile.webp";
 import testing from "@/assets/pipe-testing.webp";

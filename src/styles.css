@@ -120,7 +120,6 @@
     font-size: 1rem;
     line-height: 1.6;
     letter-spacing: 0;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
