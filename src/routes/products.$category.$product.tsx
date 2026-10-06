@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check, FileText, MessageSquare } from "lucide-react";
 import { Breadcrumbs, EnquiryBand, ProductCard, RouteFrame } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { categories, getCategory, getProduct } from "@/lib/site-data";
+import { type Category, type Product, categories, getCategory, getProduct } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$category/$product")({
@@ -52,8 +52,8 @@ export const Route = createFileRoute("/products/$category/$product")({
 });
 
 function ProductDetail() {
-  const { category, product } = Route.useLoaderData();
-  const siblings = category.products.filter((item) => item.slug !== product.slug);
+  const { category, product } = Route.useLoaderData() as { category: Category, product: Product };
+  const siblings = category.products.filter((item: any) => item.slug !== product.slug);
   const otherCategories = categories.filter((item) => item.slug !== category.slug);
 
   return (

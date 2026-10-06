@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { EnquiryBand, PageHero, ProductCard, RouteFrame, TankMark } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { categories, getCategory } from "@/lib/site-data";
+import { type Category, categories, getCategory } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$category/")({
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/products/$category/")({
 });
 
 function CategoryPage() {
-  const category = Route.useLoaderData();
+  const category = Route.useLoaderData() as Category;
   return (
     <RouteFrame>
       <PageHero

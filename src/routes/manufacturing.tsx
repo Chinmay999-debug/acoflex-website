@@ -142,12 +142,15 @@ function Manufacturing() {
               <li key={step.name} className="group">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-muted">
                   {step.image ? (
-                    <img
-                      src={step.image}
-                      alt={step.name}
-                      loading="lazy"
-                      className="photo transition-transform duration-500 group-hover:scale-[1.04]"
-                    />
+                    <picture>
+                      <source media="(min-width: 1024px)" srcSet={step.image} />
+                      <img
+                        src={(step as any).mobileImage ?? step.image}
+                        alt={step.name}
+                        loading="lazy"
+                        className="photo transition-transform duration-500 group-hover:scale-[1.04]"
+                      />
+                    </picture>
                   ) : (
                     step.diagram && <ProcessDiagram kind={step.diagram} />
                   )}

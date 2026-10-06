@@ -1,15 +1,18 @@
 import logo from "@/assets/Acoflex-Logo-white-png-scaled.png";
-import factoryWide from "@/assets/bakcground-image-factory.png";
-import testing from "@/assets/pipe-testing.jpg";
-import testingLine from "@/assets/pipe-testing-2.jpg";
-import c2 from "@/assets/c2.jpg";
-import c4 from "@/assets/c4.jpg";
-import c5 from "@/assets/c5.jpg";
-import c6 from "@/assets/c6.jpg";
-import b5 from "@/assets/b5.jpg";
-import b6 from "@/assets/b6.jpg";
-import b7 from "@/assets/b7.jpg";
-import pipeStock from "@/assets/pipe-stock.jpg";
+import factoryWide from "@/assets/bakcground-image-factory.webp";
+import factoryWideMobile from "@/assets/bakcground-image-factory-mobile.webp";
+import testing from "@/assets/pipe-testing.webp";
+import testingMobile from "@/assets/pipe-testing-mobile.webp";
+import testingLine from "@/assets/pipe-testing-2.webp";
+import testingLineMobile from "@/assets/pipe-testing-2-mobile.webp";
+import c2 from "@/assets/c2.webp";
+import c4 from "@/assets/c4.webp";
+import c5 from "@/assets/c5.webp";
+import c6 from "@/assets/c6.webp";
+import b5 from "@/assets/b5.webp";
+import b6 from "@/assets/b6.webp";
+import b7 from "@/assets/b7.webp";
+import pipeStock from "@/assets/pipe-stock.webp";
 
 /*
  * Photo library. Only pipe and manufacturing images are used: photos that
@@ -20,8 +23,11 @@ import pipeStock from "@/assets/pipe-stock.jpg";
 export const images = {
   logo,
   factoryWide,
+  factoryWideMobile,
   testing,
+  testingMobile,
   testingLine,
+  testingLineMobile,
   pipeStock,
   socketing: b5,
   testingRig: b6,
@@ -381,9 +387,10 @@ export const processSteps: {
   name: string;
   note: string;
   image?: string;
+  mobileImage?: string;
   diagram?: "calibration" | "marking";
 }[] = [
-  { name: "Extrusion", note: "Automated extrusion lines", image: factoryWide },
+  { name: "Extrusion", note: "Automated extrusion lines", image: factoryWide, mobileImage: factoryWideMobile },
   {
     name: "Calibration and cooling",
     note: "Sizing the pipe as it is formed",

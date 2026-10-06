@@ -56,11 +56,15 @@ function About() {
 
       <section className="section-y">
         <div className="site-container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <img
-            src={images.factoryWide}
-            alt="Extrusion lines at the Acoflex plant"
-            className="aspect-[4/3] w-full rounded-md object-cover"
-          />
+          <picture>
+            <source media="(min-width: 1024px)" srcSet={images.factoryWide} />
+            <img
+              src={images.factoryWideMobile}
+              alt="Extrusion lines at the Acoflex plant"
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-md object-cover"
+            />
+          </picture>
           <div>
             <p className="kicker">Who we are</p>
             <h2 className="h-section mt-4">

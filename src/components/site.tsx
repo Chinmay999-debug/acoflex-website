@@ -385,13 +385,15 @@ export function PageHero({
   return (
     <section className="relative overflow-hidden bg-forest text-white">
       {image && (
-        <div className="absolute bottom-1 right-0 top-0 hidden w-[46%] lg:block">
+        <picture className="absolute bottom-1 right-0 top-0 hidden w-[46%] lg:block">
+          <source media="(min-width: 1024px)" srcSet={image} />
           <img
-            src={image}
+            src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
             alt={imageAlt ?? ""}
+            fetchPriority="high"
             className="photo opacity-85 [mask-image:linear-gradient(to_right,transparent,black_60%)]"
           />
-        </div>
+        </picture>
       )}
       <div className="site-container relative py-14 lg:py-20">
         <Breadcrumbs items={crumbs} light />

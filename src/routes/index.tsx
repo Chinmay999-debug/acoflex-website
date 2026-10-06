@@ -54,6 +54,8 @@ function Index() {
       <section className="relative overflow-hidden bg-forest text-white">
         <div className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
           <img
+            srcSet={`${images.factoryWide} 1024w`}
+            sizes="(min-width: 1024px) 58vw, 1px"
             src={images.factoryWide}
             alt="Acoflex pipe extrusion lines on the factory floor"
             className="photo opacity-90 [mask-image:linear-gradient(to_right,transparent,black_50%)]"
@@ -80,8 +82,9 @@ function Index() {
           </div>
         </div>
         <img
-          src={images.factoryWide}
+          src={images.factoryWideMobile}
           alt=""
+          fetchPriority="high"
           className="aspect-[16/9] w-full object-cover lg:hidden"
         />
         <div className="h-1 bg-gold" />
@@ -156,12 +159,15 @@ function Index() {
             </Button>
           </div>
           <div className="relative">
-            <img
-              src={images.testingLine}
-              alt="Pipes on a roller line inside the Acoflex plant"
-              loading="lazy"
-              className="aspect-[4/3] w-full rounded-md object-cover"
-            />
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={images.testingLine} />
+              <img
+                src={images.testingLineMobile}
+                alt="Pipes on a roller line inside the Acoflex plant"
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-md object-cover"
+              />
+            </picture>
             <div
               className="absolute -bottom-4 -left-4 hidden h-24 w-24 rounded-md border-b-4 border-l-4 border-gold lg:block"
               aria-hidden="true"
@@ -187,12 +193,15 @@ function Index() {
             {highlightSteps.map((step) => (
               <figure key={step.name} className="group">
                 <div className="aspect-[4/5] overflow-hidden rounded-md bg-muted">
-                  <img
-                    src={step.image ?? images.factoryWide}
-                    alt={step.name}
-                    loading="lazy"
-                    className="photo transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
+                  <picture>
+                    <source media="(min-width: 1024px)" srcSet={step.image ?? images.factoryWide} />
+                    <img
+                      src={(step as any).mobileImage ?? step.image ?? images.factoryWideMobile}
+                      alt={step.name}
+                      loading="lazy"
+                      className="photo transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  </picture>
                 </div>
                 <figcaption className="mt-4">
                   <p className="h-card text-base">{step.name}</p>
@@ -207,12 +216,15 @@ function Index() {
       {/* Quality */}
       <section className="section-y bg-forest text-white">
         <div className="site-container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <img
-            src={images.testing}
-            alt="Technician inspecting pipes in the testing lab"
-            loading="lazy"
-            className="aspect-[4/3] w-full rounded-md object-cover lg:order-2"
-          />
+          <picture className="lg:order-2">
+            <source media="(min-width: 1024px)" srcSet={images.testing} />
+            <img
+              src={images.testingMobile}
+              alt="Technician inspecting pipes in the testing lab"
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-md object-cover"
+            />
+          </picture>
           <div>
             <p className="kicker !text-white/80">Quality</p>
             <h2 className="h-section mt-4">An in-house testing lab at the plant</h2>
