@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, ChevronRight, Clock, Mail, MapPin, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,7 @@ function ProductsMenu() {
 }
 
 function MobileMenu() {
+  const [open, setOpen] = useState(false);
   const plain = [
     { label: "Home", to: "/" },
     ...navItems.filter((item) => item.to !== "/products"),
@@ -90,47 +92,65 @@ function MobileMenu() {
     { label: "FAQ", to: "/faq" },
     { label: "Contact", to: "/contact" },
   ] as const;
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:bg-white/10 hover:text-white lg:hidden"
-          aria-label="Open navigation"
-        >
-          <Menu className="!size-6" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent
-        hideClose
-        // Focus the panel rather than the close button on open, so no focus ring shows on tap.
-        onOpenAutoFocus={(event) => {
-          event.preventDefault();
-          (event.currentTarget as HTMLElement | null)?.focus();
-        }}
-        className="w-full max-w-none overflow-y-auto border-l-0 bg-forest p-0 text-white outline-none sm:max-w-sm"
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-white hover:bg-white/10 hover:text-white lg:hidden"
+        aria-label="Open navigation"
+        onClick={() => setOpen(true)}
       >
-        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <Menu className="!size-6" />
+      </Button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 lg:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <div
+        className={cn(
+          "fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-forest p-0 text-white shadow-2xl outline-none transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto border-l border-white/10",
+          open ? "translate-x-0" : "translate-x-full",
+        )}
+      >
         <div className="flex items-center justify-between border-b border-white/10 py-4 pl-6 pr-4">
           <Brand className="h-10" />
-          <SheetClose asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/10 hover:text-white"
-              aria-label="Close navigation"
-            >
-              <X className="!size-6" />
-            </Button>
-          </SheetClose>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10 hover:text-white"
+            aria-label="Close navigation"
+            onClick={() => setOpen(false)}
+          >
+            <X className="!size-6" />
+          </Button>
         </div>
         <nav className="px-6 py-4" aria-label="Mobile navigation">
-          <SheetClose asChild>
-            <Link to="/" className="block border-b border-white/10 py-4 text-lg font-medium">
-              Home
-            </Link>
-          </SheetClose>
+          <Link
+            to="/"
+            onClick={() => setOpen(false)}
+            className="block border-b border-white/10 py-4 text-lg font-medium"
+          >
+            Home
+          </Link>
           <Accordion type="single" collapsible>
             <AccordionItem value="products" className="border-white/10">
               <AccordionTrigger className="py-4 text-lg font-medium hover:no-underline [&>svg]:text-white/70">
@@ -138,50 +158,53 @@ function MobileMenu() {
               </AccordionTrigger>
               <AccordionContent className="pb-4">
                 {categories.map((category) => (
-                  <SheetClose asChild key={category.slug}>
-                    <Link
-                      to="/products/$category"
-                      params={{ category: category.slug }}
-                      className="flex items-center justify-between py-2.5 text-[0.9375rem] text-white/80"
-                    >
-                      {category.name}
-                      {category.comingSoon && (
-                        <span className="rounded-sm bg-gold/15 px-2 py-0.5 text-xs text-gold">
-                          Soon
-                        </span>
-                      )}
-                    </Link>
-                  </SheetClose>
-                ))}
-                <SheetClose asChild>
                   <Link
-                    to="/products"
-                    className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-gold"
+                    key={category.slug}
+                    to="/products/$category"
+                    params={{ category: category.slug }}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-between py-2.5 text-[0.9375rem] text-white/80"
                   >
-                    All products <ArrowRight className="size-4" />
+                    {category.name}
+                    {category.comingSoon && (
+                      <span className="rounded-sm bg-gold/15 px-2 py-0.5 text-xs text-gold">
+                        Soon
+                      </span>
+                    )}
                   </Link>
-                </SheetClose>
+                ))}
+                <Link
+                  to="/products"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-gold"
+                >
+                  All products <ArrowRight className="size-4" />
+                </Link>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
           {plain.slice(1).map((item) => (
-            <SheetClose asChild key={item.to}>
-              <Link
-                to={item.to}
-                className="block border-b border-white/10 py-4 text-lg font-medium"
-              >
-                {item.label}
-              </Link>
-            </SheetClose>
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={() => setOpen(false)}
+              className="block border-b border-white/10 py-4 text-lg font-medium"
+            >
+              {item.label}
+            </Link>
           ))}
-          <SheetClose asChild>
-            <Button asChild variant="gold" size="lg" className="mt-8 w-full">
-              <Link to="/contact">Get a quote</Link>
-            </Button>
-          </SheetClose>
+          <Button
+            asChild
+            variant="gold"
+            size="lg"
+            className="mt-8 w-full"
+            onClick={() => setOpen(false)}
+          >
+            <Link to="/contact">Get a quote</Link>
+          </Button>
         </nav>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </>
   );
 }
 
