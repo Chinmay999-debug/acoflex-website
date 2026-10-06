@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Factory, FlaskConical, Package, Warehouse } from "lucide-react";
-import { EnquiryBand, PageHero } from "@/components/site";
+import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images, processSteps } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -191,7 +191,7 @@ function ProcessJourney() {
           >
             <span
               aria-hidden="true"
-              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] bottom-[calc(var(--row)/2)] w-px -translate-x-1/2 bg-white/12"
+              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] bottom-[calc(var(--row)/2)] w-px -translate-x-1/2 bg-border"
             />
             <span
               aria-hidden="true"
@@ -204,7 +204,7 @@ function ProcessJourney() {
             {/* Soft glow that travels with the active marker */}
             <span
               aria-hidden="true"
-              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] size-9 rounded-full bg-gold/25 blur-md"
+              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] size-9 rounded-full bg-gold/30 blur-md"
               style={{
                 transform: `translate(-50%, -50%) translateY(calc(var(--row) * ${active}))`,
                 transition: `transform 700ms ${EASE}`,
@@ -229,7 +229,7 @@ function ProcessJourney() {
                           ? "border-gold bg-gold shadow-[0_0_0_5px_color-mix(in_oklab,var(--gold)_22%,transparent)]"
                           : done
                             ? "border-gold bg-gold"
-                            : "border-white/25 bg-forest-deep group-hover:border-white/50",
+                            : "border-input bg-background group-hover:border-muted-foreground/50",
                       )}
                     />
                     <span
@@ -242,7 +242,11 @@ function ProcessJourney() {
                       <span
                         className={cn(
                           "w-6 shrink-0 text-sm font-semibold tabular-nums transition-colors duration-500",
-                          isActive ? "text-gold" : done ? "text-white/55" : "text-white/35",
+                          isActive
+                            ? "text-primary"
+                            : done
+                              ? "text-foreground/55"
+                              : "text-muted-foreground/60",
                         )}
                       >
                         {pad(i + 1)}
@@ -252,15 +256,15 @@ function ProcessJourney() {
                           className={cn(
                             "block truncate text-[0.9375rem] transition-colors duration-500 lg:font-display lg:text-lg",
                             isActive
-                              ? "font-semibold text-white"
-                              : "font-medium text-white/50 group-hover:text-white/75",
+                              ? "font-semibold text-foreground"
+                              : "font-medium text-muted-foreground group-hover:text-foreground/80",
                           )}
                         >
                           {step.name}
                         </span>
                         <span
                           className={cn(
-                            "hidden truncate text-sm text-white/55 transition-opacity duration-500 lg:block [@media(max-height:720px)]:hidden",
+                            "hidden truncate text-sm text-muted-foreground transition-opacity duration-500 lg:block [@media(max-height:720px)]:hidden",
                             isActive ? "opacity-100" : "opacity-0",
                           )}
                         >
@@ -275,7 +279,7 @@ function ProcessJourney() {
           </ol>
 
           {/* Active stage visual: each new stage is wiped in left-to-right over the previous one */}
-          <div className="relative order-1 aspect-[4/3] max-h-[calc(100svh-var(--hdr)-var(--tl)-9.5rem)] w-full overflow-hidden rounded-md bg-forest ring-1 ring-white/10 lg:order-none lg:col-span-7 lg:max-h-[calc(100svh-var(--hdr)-12rem)]">
+          <div className="relative order-1 aspect-[4/3] max-h-[calc(100svh-var(--hdr)-var(--tl)-9.5rem)] w-full overflow-hidden rounded-md bg-forest shadow-[0_28px_60px_-28px_rgb(0_0_0/0.45)] ring-1 ring-black/5 lg:order-none lg:col-span-7 lg:max-h-[calc(100svh-var(--hdr)-12rem)]">
             {processSteps.map((step, i) => {
               const isActive = i === active;
               return (
@@ -354,7 +358,7 @@ function ProcessJourney() {
             {/* Outlined numeral that rolls between stages */}
             <div
               aria-hidden="true"
-              className="flex shrink-0 font-display text-[3.25rem] font-semibold leading-none tracking-tight text-transparent [-webkit-text-stroke:1.25px_var(--gold)] lg:text-[5rem]"
+              className="flex shrink-0 font-display text-[3.25rem] font-semibold leading-none tracking-tight text-transparent [-webkit-text-stroke:1.25px_var(--primary)] lg:text-[5rem]"
             >
               <span>0</span>
               <span className="relative block h-[1em] overflow-hidden">
@@ -385,13 +389,16 @@ function ProcessJourney() {
                 });
                 return (
                   <div key={step.name} aria-hidden={!isActive} className="[grid-area:1/1]">
-                    <p className="text-[0.8125rem] font-semibold text-white/55" style={reveal(60)}>
+                    <p className="text-[0.8125rem] font-semibold text-primary" style={reveal(60)}>
                       Stage {pad(i + 1)} of {pad(processSteps.length)}
                     </p>
-                    <h3 className="h-sub mt-1 text-white" style={reveal(120)}>
+                    <h3 className="h-sub mt-1" style={reveal(120)}>
                       {step.name}
                     </h3>
-                    <p className="mt-0.5 text-[0.9375rem] text-white/65" style={reveal(180)}>
+                    <p
+                      className="mt-0.5 text-[0.9375rem] text-muted-foreground"
+                      style={reveal(180)}
+                    >
                       {step.note}
                     </p>
                   </div>
@@ -416,13 +423,13 @@ function Manufacturing() {
         imageAlt="Pipes on a roller line at the plant"
       />
 
-      <section className="section-y bg-forest-deep text-white [--hdr:5rem] [--step:34svh] md:[--hdr:7.25rem] lg:[--step:45svh]">
+      <section className="section-y [--hdr:5rem] [--step:34svh] md:[--hdr:7.25rem] lg:[--step:45svh]">
         <div className="site-container">
-          <p className="kicker !text-white/80">Production process</p>
-          <h2 className="h-section mt-4 text-white">How an Acoflex pipe is made</h2>
-          <p className="body-copy mt-4 text-white/65">
-            The main production stages at the Ambala plant.
-          </p>
+          <SectionHeading
+            kicker="Production process"
+            title="How an Acoflex pipe is made"
+            copy="The main production stages at the Ambala plant."
+          />
         </div>
         <ProcessJourney />
       </section>
