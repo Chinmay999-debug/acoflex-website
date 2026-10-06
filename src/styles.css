@@ -283,6 +283,21 @@
   }
 }
 
+/* Manufacturing process: gold edge that travels with the image wipe. */
+@keyframes journey-sweep {
+  from {
+    transform: translateX(-100%);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
