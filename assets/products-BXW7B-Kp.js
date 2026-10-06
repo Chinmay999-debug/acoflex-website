@@ -1,0 +1,1 @@
+import{o as e}from"./useStore-CdwiKFMT.js";import{U as t}from"./index-DXT0LK46.js";var n=e();function r(){return(0,n.jsx)(t,{})}export{r as component};
