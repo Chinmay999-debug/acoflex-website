@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Factory, FlaskConical, Package, Warehouse } from "lucide-react";
 import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images, processSteps } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/manufacturing")({
   head: () => ({
@@ -119,6 +121,196 @@ function ProcessDiagram({ kind }: { kind: "calibration" | "marking" }) {
   );
 }
 
+const lastStep = processSteps.length - 1;
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * Scroll-driven walk through the production stages. The panel is sticky while
+ * the visitor scrolls past one invisible sentinel per stage; an
+ * IntersectionObserver marks the sentinel crossing the middle of the viewport
+ * as active. State only changes when the stage changes, and all motion is CSS
+ * opacity/transform transitions, so nothing runs per scroll frame.
+ *
+ * Expects --hdr (sticky header height) and --step (scroll length per stage)
+ * on an ancestor.
+ */
+function ProcessJourney() {
+  const [active, setActive] = useState(0);
+  const sentinels = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting)
+            setActive(Number((entry.target as HTMLElement).dataset["step"]));
+        }
+      },
+      { rootMargin: "-50% 0px -49% 0px" },
+    );
+    sentinels.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  function goTo(i: number) {
+    const el = sentinels.current[i];
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    window.scrollTo({
+      top: window.scrollY + r.top + r.height / 2 - window.innerHeight / 2,
+      behavior: "smooth",
+    });
+  }
+
+  return (
+    <div
+      className="relative mt-10 lg:mt-14"
+      style={{ height: `calc(100svh - var(--hdr) + ${processSteps.length} * var(--step))` }}
+    >
+      {processSteps.map((step, i) => (
+        <div
+          key={step.name}
+          ref={(el) => {
+            sentinels.current[i] = el;
+          }}
+          data-step={i}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0"
+          style={{ top: `calc(50svh - var(--hdr) + ${i} * var(--step))`, height: "var(--step)" }}
+        />
+      ))}
+
+      <div className="sticky top-[var(--hdr)] flex h-[calc(100svh-var(--hdr))] items-center py-4 [--row:2.25rem] [--tl:calc(7*var(--row))] lg:py-8 lg:[--row:min(4.25rem,calc((100svh-var(--hdr)-4rem)/7))] [@media(max-height:560px)]:[--tl:0px]">
+        <div className="site-container grid gap-5 lg:grid-cols-12 lg:items-center lg:gap-x-16 lg:gap-y-5">
+          {/* Timeline */}
+          <ol
+            className="relative order-3 lg:order-none lg:col-span-5 lg:row-span-2 [@media(max-height:560px)]:hidden lg:[@media(max-height:560px)]:block"
+            aria-label="Production stages"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] bottom-[calc(var(--row)/2)] w-px -translate-x-1/2 bg-border"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute left-[0.4375rem] top-[calc(var(--row)/2)] bottom-[calc(var(--row)/2)] w-0.5 origin-top -translate-x-1/2 bg-gold transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-50%) scaleY(${active / lastStep})` }}
+            />
+            {processSteps.map((step, i) => {
+              const isActive = i === active;
+              return (
+                <li key={step.name} className="h-[var(--row)]">
+                  <button
+                    type="button"
+                    onClick={() => goTo(i)}
+                    aria-current={isActive ? "step" : undefined}
+                    className="flex h-full w-full items-center gap-4 text-left"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "relative size-3.5 shrink-0 rounded-full border-2 transition-[background-color,border-color,box-shadow] duration-300",
+                        isActive
+                          ? "border-gold bg-gold shadow-[0_0_0_4px_color-mix(in_oklab,var(--gold)_25%,transparent)]"
+                          : i < active
+                            ? "border-gold bg-gold"
+                            : "border-input bg-background",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "w-6 shrink-0 text-sm font-semibold tabular-nums transition-colors duration-300",
+                        isActive ? "text-primary" : "text-muted-foreground/70",
+                      )}
+                    >
+                      {pad(i + 1)}
+                    </span>
+                    <span className="min-w-0">
+                      <span
+                        className={cn(
+                          "block truncate text-[0.9375rem] transition-colors duration-300 lg:font-display lg:text-lg",
+                          isActive
+                            ? "font-semibold text-foreground"
+                            : "font-medium text-muted-foreground",
+                        )}
+                      >
+                        {step.name}
+                      </span>
+                      <span
+                        className={cn(
+                          "hidden truncate text-sm text-muted-foreground transition-opacity duration-300 lg:block [@media(max-height:720px)]:hidden",
+                          isActive ? "opacity-100" : "opacity-0",
+                        )}
+                      >
+                        {step.note}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+
+          {/* Active stage visual */}
+          <div className="relative order-1 aspect-[4/3] max-h-[calc(100svh-var(--hdr)-var(--tl)-9rem)] w-full overflow-hidden rounded-md bg-muted lg:order-none lg:col-span-7 lg:max-h-[calc(100svh-var(--hdr)-10rem)]">
+            {processSteps.map((step, i) => (
+              <div
+                key={step.name}
+                aria-hidden={i !== active}
+                className={cn(
+                  "absolute inset-0 transition-opacity duration-500 ease-out",
+                  i === active ? "opacity-100" : "opacity-0",
+                )}
+              >
+                {step.image ? (
+                  <picture>
+                    <source media="(min-width: 1024px)" srcSet={step.image} />
+                    <img
+                      src={step.mobileImage ?? step.image}
+                      alt={step.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="photo"
+                    />
+                  </picture>
+                ) : (
+                  step.diagram && <ProcessDiagram kind={step.diagram} />
+                )}
+              </div>
+            ))}
+            <span className="absolute left-4 top-4 grid size-9 place-items-center rounded-sm bg-forest text-sm font-semibold text-white tabular-nums">
+              {active + 1}
+            </span>
+          </div>
+
+          {/* Active stage caption */}
+          <div
+            className="order-2 grid lg:order-none lg:col-span-7 lg:col-start-6"
+            aria-live="polite"
+          >
+            {processSteps.map((step, i) => (
+              <div
+                key={step.name}
+                aria-hidden={i !== active}
+                className={cn(
+                  "[grid-area:1/1] transition-opacity duration-300",
+                  i === active ? "opacity-100" : "opacity-0",
+                )}
+              >
+                <p className="text-[0.8125rem] font-semibold text-primary">
+                  Step {pad(i + 1)} of {pad(processSteps.length)}
+                </p>
+                <h3 className="h-sub mt-1">{step.name}</h3>
+                <p className="mt-0.5 text-[0.9375rem] text-muted-foreground">{step.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Manufacturing() {
   return (
     <>
@@ -130,40 +322,15 @@ function Manufacturing() {
         imageAlt="Pipes on a roller line at the plant"
       />
 
-      <section className="section-y">
+      <section className="section-y [--hdr:5rem] [--step:34svh] md:[--hdr:7.25rem] lg:[--step:45svh]">
         <div className="site-container">
           <SectionHeading
             kicker="Production process"
             title="How an Acoflex pipe is made"
             copy="The main production stages at the Ambala plant."
           />
-          <ol className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((step, i) => (
-              <li key={step.name} className="group">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-muted">
-                  {step.image ? (
-                    <picture>
-                      <source media="(min-width: 1024px)" srcSet={step.image} />
-                      <img
-                        src={(step as any).mobileImage ?? step.image}
-                        alt={step.name}
-                        loading="lazy"
-                        className="photo transition-transform duration-500 group-hover:scale-[1.04]"
-                      />
-                    </picture>
-                  ) : (
-                    step.diagram && <ProcessDiagram kind={step.diagram} />
-                  )}
-                  <span className="absolute left-4 top-4 grid size-9 place-items-center rounded-sm bg-forest text-sm font-semibold text-white">
-                    {i + 1}
-                  </span>
-                </div>
-                <h3 className="h-card mt-5">{step.name}</h3>
-                <p className="mt-1.5 text-[0.9375rem] text-muted-foreground">{step.note}</p>
-              </li>
-            ))}
-          </ol>
         </div>
+        <ProcessJourney />
       </section>
 
       <section className="section-y bg-secondary">
