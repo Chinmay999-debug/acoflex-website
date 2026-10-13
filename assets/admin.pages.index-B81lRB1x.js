@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cltr0gcK.js";import{at as t}from"./index-nojfqKZv.js";var n=e(),r=()=>(0,n.jsx)(t,{to:`/admin`,replace:!0});export{r as component};
