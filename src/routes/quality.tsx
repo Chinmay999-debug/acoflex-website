@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { EnquiryBand, PageHero } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images } from "@/lib/site-data";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/quality")({
   head: () => ({
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/quality")({
   component: Quality,
 });
 
-const stages = [
+const defaultStages = [
   {
     title: "Raw material",
     copy: "Raw material is stored in silos at the plant before processing.",
@@ -41,11 +42,25 @@ const stages = [
 ];
 
 function Quality() {
+  const { data: pageData } = usePublishedPageContent("quality");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Quality";
+  const heroIntro =
+    content?.hero?.intro ||
+    "Quality checks run alongside production at the Acoflex plant, supported by an in-house testing lab.";
+  const stages =
+    Array.isArray(content?.stages) && content.stages.length > 0 ? content.stages : defaultStages;
+  const labSection = content?.lab_section || {
+    kicker: "Testing lab",
+    title: "Quality checks at the plant",
+    copy: "Acoflex has an in-house testing lab at its Ambala plant. Details of the tests carried out for each product, and any applicable standards, are available on request.",
+  };
+
   return (
     <>
       <PageHero
-        title="Quality"
-        intro="Quality checks run alongside production at the Acoflex plant, supported by an in-house testing lab."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "Quality" }]}
         image={images.testing}
         imageAlt="Technician inspecting pipes in the testing lab"
@@ -74,12 +89,9 @@ function Quality() {
             className="aspect-[4/3] w-full rounded-md object-cover"
           />
           <div>
-            <p className="kicker">Testing lab</p>
-            <h2 className="h-section mt-4">Quality checks at the plant</h2>
-            <p className="body-copy mt-5 text-muted-foreground">
-              Acoflex has an in-house testing lab at its Ambala plant. Details of the tests carried
-              out for each product, and any applicable standards, are available on request.
-            </p>
+            <p className="kicker">{labSection.kicker}</p>
+            <h2 className="h-section mt-4">{labSection.title}</h2>
+            <p className="body-copy mt-5 text-muted-foreground">{labSection.copy}</p>
             <Link to="/contact" search={{ product: "Testing details" }} className="text-link mt-7">
               Ask about testing <ArrowRight />
             </Link>

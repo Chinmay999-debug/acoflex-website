@@ -13,13 +13,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { CategoryCard, EnquiryBand, SectionHeading } from "@/components/site";
 import {
-  allProducts,
-  categories,
+  allProducts as fallbackAllProducts,
+  categories as fallbackCategories,
   dealerBenefits,
   images,
   processSteps,
   strengths,
 } from "@/lib/site-data";
+import {
+  usePublishedCategories,
+  usePublishedPageContent,
+  usePublishedProducts,
+} from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,6 +53,63 @@ const strengthIcons = [Factory, FlaskConical, Warehouse, FileText] as const;
 const benefitIcons = [Tag, PackageCheck, Truck, Megaphone] as const;
 
 function Index() {
+  const { data: pageData } = usePublishedPageContent("home");
+  const { data: dynamicCategories } = usePublishedCategories();
+  const { products: dynamicProducts } = usePublishedProducts();
+
+  const categories = dynamicCategories ?? fallbackCategories;
+  const allProducts = dynamicProducts.length > 0 ? dynamicProducts : fallbackAllProducts;
+
+  const content = pageData?.content;
+  const heroKicker = content?.hero?.kicker || "Pipe manufacturer · Ambala, Haryana";
+  const heroTitle = content?.hero?.title || "Pipe systems for plumbing, drainage and agriculture";
+  const heroLede =
+    content?.hero?.lede ||
+    "Acoflex manufactures CPVC, UPVC, PPR-C, SWR, drainage and agricultural pipes at its plant in Ambala, Haryana.";
+  const heroCtaPrimary = content?.hero?.cta_primary || {
+    label: "Explore products",
+    to: "/products",
+  };
+  const heroCtaSecondary = content?.hero?.cta_secondary || {
+    label: "Contact sales",
+    to: "/contact",
+  };
+
+  const homeStrengths =
+    Array.isArray(content?.strengths) && content.strengths.length > 0
+      ? content.strengths
+      : strengths;
+
+  const productsSection = content?.products_section || {
+    kicker: "Our products",
+    title: "Four product categories, one dependable supplier",
+    copy: "Browse by category to find the right pipe system for your application.",
+  };
+
+  const aboutTeaser = content?.about_teaser || {
+    kicker: "About Acoflex",
+    title: "A pipe manufacturer based in Ambala, Haryana",
+    copy: "Acoflex manufactures plumbing, drainage and agriculture pipe systems at its plant in Barara, Ambala, with extrusion, testing and storage facilities on site.",
+  };
+
+  const manufacturingTeaser = content?.manufacturing_teaser || {
+    kicker: "Manufacturing",
+    title: "From raw material to finished pipe",
+    copy: "Production, testing and storage stages at the Ambala plant.",
+  };
+
+  const qualityTeaser = content?.quality_teaser || {
+    kicker: "Quality",
+    title: "An in-house testing lab at the plant",
+    copy: "Acoflex carries out quality checks at its own testing lab. Testing details and quality documentation for each product are available on request.",
+  };
+
+  const dealersTeaser = content?.dealers_teaser || {
+    kicker: "Dealers and distributors",
+    title: "Partner with Acoflex",
+    copy: "Acoflex welcomes enquiries from wholesalers, distributors and project buyers.",
+  };
+
   // Home shows the later stages: each has its own photo not used elsewhere on the page.
   const highlightSteps = processSteps.slice(3);
   return (
@@ -86,20 +148,19 @@ function Index() {
         />
         <div className="site-container relative grid items-center pb-32 pt-12 sm:pb-40 sm:pt-16 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
           <div className="lg:col-span-6">
-            <p className="kicker !text-white/80">Pipe manufacturer · Ambala, Haryana</p>
-            <h1 className="h-hero mt-6">Pipe systems for plumbing, drainage and agriculture</h1>
-            <p className="lede mt-6 text-white/90 lg:text-white/75">
-              Acoflex manufactures CPVC, UPVC, PPR-C, SWR, drainage and agricultural pipes at its
-              plant in Ambala, Haryana.
-            </p>
+            <p className="kicker !text-white/80">{heroKicker}</p>
+            <h1 className="h-hero mt-6">{heroTitle}</h1>
+            <p className="lede mt-6 text-white/90 lg:text-white/75">{heroLede}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild variant="gold" size="lg">
-                <Link to="/products">
-                  Explore products <ArrowRight />
+                <Link to={heroCtaPrimary.to || "/products"}>
+                  {heroCtaPrimary.label || "Explore products"} <ArrowRight />
                 </Link>
               </Button>
               <Button asChild variant="outlineLight" size="lg">
-                <Link to="/contact">Contact sales</Link>
+                <Link to={heroCtaSecondary.to || "/contact"}>
+                  {heroCtaSecondary.label || "Contact sales"}
+                </Link>
               </Button>
             </div>
           </div>
@@ -110,7 +171,7 @@ function Index() {
       {/* Strengths */}
       <section className="bg-forest-deep text-white">
         <div className="site-container grid gap-px sm:grid-cols-2 lg:grid-cols-4">
-          {strengths.map((item, i) => {
+          {homeStrengths.map((item, i) => {
             const Icon = strengthIcons[i % strengthIcons.length] ?? Factory;
             return (
               <div key={item.title} className="flex gap-4 py-7 lg:px-6 lg:first:pl-0">
@@ -129,9 +190,9 @@ function Index() {
       <section className="section-y">
         <div className="site-container">
           <SectionHeading
-            kicker="Our products"
-            title="Four product categories, one dependable supplier"
-            copy="Browse by category to find the right pipe system for your application."
+            kicker={productsSection.kicker}
+            title={productsSection.title}
+            copy={productsSection.copy}
             action={
               <Link to="/products" className="text-link">
                 View all products <ArrowRight />
@@ -150,12 +211,9 @@ function Index() {
       <section className="section-y bg-secondary">
         <div className="site-container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="kicker">About Acoflex</p>
-            <h2 className="h-section mt-4">A pipe manufacturer based in Ambala, Haryana</h2>
-            <p className="body-copy mt-5 text-muted-foreground">
-              Acoflex manufactures plumbing, drainage and agriculture pipe systems at its plant in
-              Barara, Ambala, with extrusion, testing and storage facilities on site.
-            </p>
+            <p className="kicker">{aboutTeaser.kicker}</p>
+            <h2 className="h-section mt-4">{aboutTeaser.title}</h2>
+            <p className="body-copy mt-5 text-muted-foreground">{aboutTeaser.copy}</p>
             <dl className="mt-9 grid grid-cols-3 gap-6 border-t border-border pt-7">
               {[
                 { value: categories.length, label: "Product categories" },
@@ -197,9 +255,9 @@ function Index() {
       <section className="section-y">
         <div className="site-container">
           <SectionHeading
-            kicker="Manufacturing"
-            title="From raw material to finished pipe"
-            copy="Production, testing and storage stages at the Ambala plant."
+            kicker={manufacturingTeaser.kicker}
+            title={manufacturingTeaser.title}
+            copy={manufacturingTeaser.copy}
             action={
               <Link to="/manufacturing" className="text-link">
                 See the full process <ArrowRight />
@@ -213,7 +271,7 @@ function Index() {
                   <picture>
                     <source media="(min-width: 1024px)" srcSet={step.image ?? images.factoryWide} />
                     <img
-                      src={(step as any).mobileImage ?? step.image ?? images.factoryWideMobile}
+                      src={step.mobileImage ?? step.image ?? images.factoryWideMobile}
                       alt={step.name}
                       loading="lazy"
                       className="photo transition-transform duration-500 group-hover:scale-[1.04]"
@@ -243,12 +301,9 @@ function Index() {
             />
           </picture>
           <div>
-            <p className="kicker !text-white/80">Quality</p>
-            <h2 className="h-section mt-4">An in-house testing lab at the plant</h2>
-            <p className="body-copy mt-5 text-white/70">
-              Acoflex carries out quality checks at its own testing lab. Testing details and quality
-              documentation for each product are available on request.
-            </p>
+            <p className="kicker !text-white/80">{qualityTeaser.kicker}</p>
+            <h2 className="h-section mt-4">{qualityTeaser.title}</h2>
+            <p className="body-copy mt-5 text-white/70">{qualityTeaser.copy}</p>
             <Link to="/quality" className="text-link mt-9 !text-gold">
               Our approach to quality <ArrowRight />
             </Link>
@@ -260,11 +315,9 @@ function Index() {
       <section className="section-y">
         <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-5">
-            <p className="kicker">Dealers and distributors</p>
-            <h2 className="h-section mt-4">Partner with Acoflex</h2>
-            <p className="body-copy mt-5 text-muted-foreground">
-              Acoflex welcomes enquiries from wholesalers, distributors and project buyers.
-            </p>
+            <p className="kicker">{dealersTeaser.kicker}</p>
+            <h2 className="h-section mt-4">{dealersTeaser.title}</h2>
+            <p className="body-copy mt-5 text-muted-foreground">{dealersTeaser.copy}</p>
             <Link to="/dealers" className="text-link mt-7">
               Dealer enquiries <ArrowRight />
             </Link>

@@ -10,6 +10,8 @@ import { useEffect } from "react";
 
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { RouteFrame } from "../components/site";
+import { AdminAuthProvider } from "../lib/admin-auth";
+import { useLocation } from "@tanstack/react-router";
 
 function NotFoundComponent() {
   return (
@@ -101,15 +103,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* SPA build: no <html> shell (rendering one inside #root freezes React's event dispatch). */}
-      <HeadContent />
-      <RouteFrame>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </RouteFrame>
+      <AdminAuthProvider>
+        {/* SPA build: no <html> shell (rendering one inside #root freezes React's event dispatch). */}
+        <HeadContent />
+        {isAdminRoute ? (
+          <main className="min-h-screen bg-muted/20">
+            <Outlet />
+          </main>
+        ) : (
+          <RouteFrame>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </RouteFrame>
+        )}
+      </AdminAuthProvider>
     </QueryClientProvider>
   );
 }

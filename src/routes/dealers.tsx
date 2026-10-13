@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Megaphone, PackageCheck, Tag, Truck } from "lucide-react";
 import { PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { dealerBenefits, images } from "@/lib/site-data";
+import { dealerBenefits as fallbackDealerBenefits, images } from "@/lib/site-data";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/dealers")({
   head: () => ({
@@ -28,11 +29,22 @@ export const Route = createFileRoute("/dealers")({
 const benefitIcons = [Tag, PackageCheck, Truck, Megaphone] as const;
 
 function Dealers() {
+  const { data: pageData } = usePublishedPageContent("dealers");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Dealers and distributors";
+  const heroIntro =
+    content?.hero?.intro ||
+    "Acoflex welcomes enquiries from wholesalers, distributors and project buyers interested in supplying its pipe systems.";
+  const benefits =
+    Array.isArray(content?.benefits) && content.benefits.length > 0
+      ? content.benefits
+      : fallbackDealerBenefits;
+
   return (
     <>
       <PageHero
-        title="Dealers and distributors"
-        intro="Acoflex welcomes enquiries from wholesalers, distributors and project buyers interested in supplying its pipe systems."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "Dealers" }]}
         image={images.pipeStock}
         imageAlt="Pipe stock on racks at the Acoflex plant"
@@ -52,7 +64,7 @@ function Dealers() {
             align="center"
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {dealerBenefits.map(({ title, copy }, i) => {
+            {benefits.map(({ title, copy }, i: number) => {
               const Icon = benefitIcons[i % benefitIcons.length] ?? Tag;
               return (
                 <div key={title} className="rounded-md border border-border bg-card p-7">

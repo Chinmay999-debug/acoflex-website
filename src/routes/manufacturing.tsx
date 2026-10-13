@@ -4,6 +4,7 @@ import { ArrowRight, Factory, FlaskConical, Package, Warehouse } from "lucide-re
 import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { images, processSteps } from "@/lib/site-data";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/manufacturing")({
@@ -413,11 +414,18 @@ function ProcessJourney() {
 }
 
 function Manufacturing() {
+  const { data: pageData } = usePublishedPageContent("manufacturing");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Manufacturing";
+  const heroIntro =
+    content?.hero?.intro ||
+    "Production at the Acoflex plant — from raw material storage through extrusion, calibration, marking and testing to finished goods storage.";
+
   return (
     <>
       <PageHero
-        title="Manufacturing"
-        intro="Production at the Acoflex plant — from raw material storage through extrusion, calibration, marking and testing to finished goods storage."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "Manufacturing" }]}
         image={images.testingLine}
         imageAlt="Pipes on a roller line at the plant"

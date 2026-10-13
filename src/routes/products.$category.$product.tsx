@@ -2,7 +2,14 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check, FileText, MessageSquare } from "lucide-react";
 import { Breadcrumbs, EnquiryBand, ProductCard } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { type Category, type Product, categories, getCategory, getProduct } from "@/lib/site-data";
+import {
+  type Category,
+  type Product,
+  categories as fallbackCategories,
+  getCategory,
+  getProduct,
+} from "@/lib/site-data";
+import { usePublishedProduct } from "@/hooks/use-site-content";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$category/$product")({
@@ -52,9 +59,20 @@ export const Route = createFileRoute("/products/$category/$product")({
 });
 
 function ProductDetail() {
-  const { category, product } = Route.useLoaderData() as { category: Category; product: Product };
-  const siblings = category.products.filter((item: any) => item.slug !== product.slug);
-  const otherCategories = categories.filter((item) => item.slug !== category.slug);
+  const initial = Route.useLoaderData() as { category: Category; product: Product };
+  const { params } = Route.useMatch();
+  const {
+    category: dynamicCategory,
+    product: dynamicProduct,
+    allCategories,
+  } = usePublishedProduct(params.category, params.product);
+
+  const category = dynamicCategory ?? initial.category;
+  const product = dynamicProduct ?? initial.product;
+  const categoryList = allCategories ?? fallbackCategories;
+
+  const siblings = category.products.filter((item: Product) => item.slug !== product.slug);
+  const otherCategories = categoryList.filter((item) => item.slug !== category.slug);
 
   return (
     <>

@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { EnquiryBand, PageHero, ProductCard, TankMark } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { categories, images } from "@/lib/site-data";
+import { categories as fallbackCategories, images } from "@/lib/site-data";
+import { usePublishedCategories, usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -26,11 +27,24 @@ export const Route = createFileRoute("/products/")({
 });
 
 function Products() {
+  const { data: dynamicCategories } = usePublishedCategories();
+  const { data: pageData } = usePublishedPageContent("products");
+  const categories = dynamicCategories ?? fallbackCategories;
+  const pageContent = pageData?.content;
+  const heroTitle = pageContent?.hero?.title || "Our products";
+  const heroIntro =
+    pageContent?.hero?.intro ||
+    "Pipe systems for plumbing, drainage and agriculture, organised by application. Choose a category to see the full range.";
+  const enquiryTitle = pageContent?.enquiry_band?.title || "Not sure which pipe you need?";
+  const enquiryCopy =
+    pageContent?.enquiry_band?.copy ||
+    "Share your application and the team will recommend the right product and specification.";
+
   return (
     <>
       <PageHero
-        title="Our products"
-        intro="Pipe systems for plumbing, drainage and agriculture, organised by application. Choose a category to see the full range."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "Products" }]}
         image={images.pipeStock}
         imageAlt="Finished pipe stock on racks at the Acoflex plant"
@@ -94,10 +108,7 @@ function Products() {
         ))}
       </div>
 
-      <EnquiryBand
-        title="Not sure which pipe you need?"
-        copy="Share your application and the team will recommend the right product and specification."
-      />
+      <EnquiryBand title={enquiryTitle} copy={enquiryCopy} />
     </>
   );
 }

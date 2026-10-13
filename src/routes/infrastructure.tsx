@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EnquiryBand, PageHero } from "@/components/site";
 import { images } from "@/lib/site-data";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/infrastructure")({
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/infrastructure")({
   component: Infrastructure,
 });
 
-const facilities = [
+const defaultFacilities = [
   {
     title: "Extrusion plant",
     copy: "Automated extrusion lines producing the Acoflex pipe range.",
@@ -45,12 +46,37 @@ const facilities = [
   },
 ];
 
+const facilityImages = [
+  { image: images.factoryWide, alt: "Automated extrusion lines" },
+  { image: images.testing, alt: "Technician inspecting pipes in the testing lab" },
+  { image: images.pipeStock, alt: "Pipe stock on racks at the plant" },
+];
+
 function Infrastructure() {
+  const { data: pageData } = usePublishedPageContent("infrastructure");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Infrastructure";
+  const heroIntro =
+    content?.hero?.intro ||
+    "The Acoflex plant brings extrusion, testing and storage facilities together at one site in Ambala, Haryana.";
+
+  const facilities =
+    Array.isArray(content?.facilities) && content.facilities.length > 0
+      ? (content.facilities as { title: string; copy: string; alt?: string }[]).map(
+          (f, i: number) => ({
+            title: f.title,
+            copy: f.copy,
+            image: facilityImages[i % facilityImages.length]?.image ?? images.factoryWide,
+            alt: f.alt || facilityImages[i % facilityImages.length]?.alt || f.title,
+          }),
+        )
+      : defaultFacilities;
+
   return (
     <>
       <PageHero
-        title="Infrastructure"
-        intro="The Acoflex plant brings extrusion, testing and storage facilities together at one site in Ambala, Haryana."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "Infrastructure" }]}
         image={images.silos}
         imageAlt="Raw material silos at the Acoflex plant"

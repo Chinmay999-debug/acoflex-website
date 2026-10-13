@@ -2,7 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Building2, Sprout, Wrench } from "lucide-react";
 import { EnquiryBand, PageHero, SectionHeading } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { categories, images, services, strengths } from "@/lib/site-data";
+import {
+  categories as fallbackCategories,
+  images,
+  services as fallbackServices,
+  strengths,
+} from "@/lib/site-data";
+import { usePublishedCategories, usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -25,7 +31,7 @@ export const Route = createFileRoute("/about")({
   component: About,
 });
 
-const markets = [
+const defaultMarkets = [
   {
     icon: Building2,
     title: "Residential and commercial",
@@ -43,12 +49,38 @@ const markets = [
   },
 ];
 
+const marketIcons = [Building2, Sprout, Wrench] as const;
+
 function About() {
+  const { data: pageData } = usePublishedPageContent("about");
+  const { data: dynamicCategories } = usePublishedCategories();
+  const categories = dynamicCategories ?? fallbackCategories;
+
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "About Acoflex";
+  const heroIntro =
+    content?.hero?.intro ||
+    "Acoflex manufactures plumbing, drainage and agriculture pipe systems at its plant in Barara, Ambala, Haryana.";
+
+  const services =
+    Array.isArray(content?.services) && content.services.length > 0
+      ? content.services
+      : fallbackServices;
+
+  const markets =
+    Array.isArray(content?.markets) && content.markets.length > 0
+      ? (content.markets as { title: string; copy: string }[]).map((m, i: number) => ({
+          icon: marketIcons[i % marketIcons.length] ?? Building2,
+          title: m.title,
+          copy: m.copy,
+        }))
+      : defaultMarkets;
+
   return (
     <>
       <PageHero
-        title="About Acoflex"
-        intro="Acoflex manufactures plumbing, drainage and agriculture pipe systems at its plant in Barara, Ambala, Haryana."
+        title={heroTitle}
+        intro={heroIntro}
         crumbs={[{ label: "About" }]}
         image={images.pipeStock}
         imageAlt="Pipe stock on racks at the Acoflex plant"

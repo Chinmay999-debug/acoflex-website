@@ -2,7 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { EnquiryBand, PageHero, ProductCard, TankMark } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { type Category, categories, getCategory } from "@/lib/site-data";
+import { type Category, categories as fallbackCategories, getCategory } from "@/lib/site-data";
+import { usePublishedCategory } from "@/hooks/use-site-content";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$category/")({
@@ -41,7 +42,12 @@ export const Route = createFileRoute("/products/$category/")({
 });
 
 function CategoryPage() {
-  const category = Route.useLoaderData() as Category;
+  const initialCategory = Route.useLoaderData() as Category;
+  const { params } = Route.useMatch();
+  const { category: dynamicCategory, allCategories } = usePublishedCategory(params.category);
+  const category = dynamicCategory ?? initialCategory;
+  const categoriesList = allCategories ?? fallbackCategories;
+
   return (
     <>
       <PageHero
@@ -55,7 +61,7 @@ function CategoryPage() {
         <aside className="min-w-0 lg:sticky lg:top-36 lg:self-start">
           <p className="text-sm font-semibold">Product categories</p>
           <ul className="mt-4 flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-l lg:border-border lg:pb-0">
-            {categories.map((item) => {
+            {categoriesList.map((item) => {
               const active = item.slug === category.slug;
               return (
                 <li key={item.slug} className="shrink-0">

@@ -6,7 +6,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { EnquiryBand, PageHero } from "@/components/site";
-import { faqs } from "@/lib/site-data";
+import { faqs as fallbackFaqs } from "@/lib/site-data";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -29,13 +30,17 @@ export const Route = createFileRoute("/faq")({
 });
 
 function Faq() {
+  const { data: pageData } = usePublishedPageContent("faq");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Frequently asked questions";
+  const heroIntro =
+    content?.hero?.intro || "Answers to common questions about our products, testing and supply.";
+  const faqs =
+    Array.isArray(content?.faqs) && content.faqs.length > 0 ? content.faqs : fallbackFaqs;
+
   return (
     <>
-      <PageHero
-        title="Frequently asked questions"
-        intro="Answers to common questions about our products, testing and supply."
-        crumbs={[{ label: "FAQ" }]}
-      />
+      <PageHero title={heroTitle} intro={heroIntro} crumbs={[{ label: "FAQ" }]} />
       <section className="site-container section-y grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <h2 className="h-sub">Can't find your answer?</h2>
@@ -47,7 +52,7 @@ function Faq() {
           </Link>
         </div>
         <Accordion type="single" collapsible defaultValue="item-0" className="lg:col-span-8">
-          {faqs.map((faq, i) => (
+          {faqs.map((faq: { question: string; answer: string }, i: number) => (
             <AccordionItem
               key={faq.question}
               value={`item-${i}`}

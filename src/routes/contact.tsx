@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHero } from "@/components/site";
-import { contact } from "@/lib/site-data";
+import { contact as fallbackContact } from "@/lib/site-data";
+import { usePublishedPageContent, usePublishedSiteSettings } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): { product?: string } => {
@@ -42,6 +43,18 @@ export const Route = createFileRoute("/contact")({
 
 function Contact() {
   const { product } = Route.useSearch();
+  const { data: pageData } = usePublishedPageContent("contact");
+  const { data: settings } = usePublishedSiteSettings();
+
+  const contact = settings ?? fallbackContact;
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Contact us";
+  const heroIntro =
+    content?.hero?.intro ||
+    "For product information, bulk or project supply and dealership enquiries, send us a short brief and the team will respond.";
+  const mapEmbedUrl =
+    content?.map_embed_url ||
+    "https://www.google.com/maps?q=Simbla,+Barara,+Ambala,+Haryana+133201&output=embed";
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -58,11 +71,7 @@ function Contact() {
 
   return (
     <>
-      <PageHero
-        title="Contact us"
-        intro="For product information, bulk or project supply and dealership enquiries, send us a short brief and the team will respond."
-        crumbs={[{ label: "Contact" }]}
-      />
+      <PageHero title={heroTitle} intro={heroIntro} crumbs={[{ label: "Contact" }]} />
 
       <section className="site-container section-y grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="rounded-md border border-border bg-card p-6 sm:p-9 lg:col-span-7">
@@ -198,7 +207,7 @@ function Contact() {
           <div className="overflow-hidden rounded-md border border-border">
             <iframe
               title="Acoflex location map"
-              src="https://www.google.com/maps?q=Simbla,+Barara,+Ambala,+Haryana+133201&output=embed"
+              src={mapEmbedUrl}
               className="block h-72 w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

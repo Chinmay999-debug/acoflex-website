@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, FileText, HelpCircle } from "lucide-react";
 import { PageHero } from "@/components/site";
+import { usePublishedPageContent } from "@/hooks/use-site-content";
 
 export const Route = createFileRoute("/resources")({
   head: () => ({
@@ -23,6 +24,13 @@ export const Route = createFileRoute("/resources")({
 });
 
 function Resources() {
+  const { data: pageData } = usePublishedPageContent("resources");
+  const content = pageData?.content;
+  const heroTitle = content?.hero?.title || "Resources";
+  const heroIntro =
+    content?.hero?.intro ||
+    "Product information and the right way to request technical documents for your project.";
+
   const items = [
     {
       icon: BookOpen,
@@ -59,13 +67,10 @@ function Resources() {
       ),
     },
   ];
+
   return (
     <>
-      <PageHero
-        title="Resources"
-        intro="Product information and the right way to request technical documents for your project."
-        crumbs={[{ label: "Resources" }]}
-      />
+      <PageHero title={heroTitle} intro={heroIntro} crumbs={[{ label: "Resources" }]} />
       <section className="site-container section-y grid gap-6 md:grid-cols-3">
         {items.map(({ icon: Icon, title, copy, link }) => (
           <div key={title} className="flex flex-col rounded-md border border-border bg-card p-7">

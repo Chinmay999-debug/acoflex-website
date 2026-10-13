@@ -16,6 +16,7 @@ import {
   type Category,
   type Product,
 } from "@/lib/site-data";
+import { usePublishedCategories, usePublishedSiteSettings } from "@/hooks/use-site-content";
 import { cn } from "@/lib/utils";
 import leaf from "@/assets/acoflex-leaf.png";
 
@@ -39,6 +40,9 @@ export function Brand({ className }: { className?: string }) {
  * ------------------------------------------------------------------ */
 
 function ProductsMenu() {
+  const { data: dynamicCategories } = usePublishedCategories();
+  const categoryList = dynamicCategories ?? categories;
+
   return (
     <div className="group/menu relative">
       <Link
@@ -51,7 +55,7 @@ function ProductsMenu() {
       </Link>
       <div className="invisible absolute -left-6 top-full w-[44rem] opacity-0 transition duration-150 group-focus-within/menu:visible group-focus-within/menu:opacity-100 group-hover/menu:visible group-hover/menu:opacity-100">
         <div className="grid grid-cols-4 gap-px overflow-hidden rounded-b-md border-t-2 border-gold bg-border shadow-xl">
-          {categories.map((category) => (
+          {categoryList.map((category) => (
             <div key={category.slug} className="bg-white p-6">
               <Link
                 to="/products/$category"
@@ -87,6 +91,8 @@ function ProductsMenu() {
 
 function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const { data: dynamicCategories } = usePublishedCategories();
+  const categoryList = dynamicCategories ?? categories;
   const plain = [
     { label: "Home", to: "/" },
     ...navItems.filter((item) => item.to !== "/products"),
@@ -167,7 +173,7 @@ function MobileMenu() {
                 Products
               </AccordionTrigger>
               <AccordionContent className="pb-4">
-                {categories.map((category) => (
+                {categoryList.map((category) => (
                   <Link
                     key={category.slug}
                     to="/products/$category"
@@ -219,25 +225,31 @@ function MobileMenu() {
 }
 
 export function Header() {
+  const { data: settings } = usePublishedSiteSettings();
+  const noticeBar = settings?.notice_bar;
+  const locationText = noticeBar?.location || "Barara, Ambala, Haryana";
+  const hoursText = noticeBar?.hours || settings?.hours || contact.hours;
+  const emailText = noticeBar?.email || settings?.emails?.[0] || contact.emails[0];
+
   return (
     <header className="sticky top-0 z-50">
       <div className="hidden bg-forest-deep text-[0.8125rem] text-white/70 md:block">
         <div className="site-container flex h-9 items-center justify-between">
           <span className="inline-flex items-center gap-2">
             <MapPin className="size-3.5 text-gold" />
-            Barara, Ambala, Haryana
+            {locationText}
           </span>
           <div className="flex items-center gap-6">
             <span className="inline-flex items-center gap-2">
               <Clock className="size-3.5 text-gold" />
-              {contact.hours}
+              {hoursText}
             </span>
             <a
-              href={`mailto:${contact.emails[0]}`}
+              href={`mailto:${emailText}`}
               className="inline-flex items-center gap-2 hover:text-white"
             >
               <Mail className="size-3.5 text-gold" />
-              {contact.emails[0]}
+              {emailText}
             </a>
           </div>
         </div>
@@ -281,6 +293,12 @@ export function Header() {
  * ------------------------------------------------------------------ */
 
 export function Footer() {
+  const { data: dynamicCategories } = usePublishedCategories();
+  const { data: settings } = usePublishedSiteSettings();
+  const categoryList = dynamicCategories ?? categories;
+  const companyInfo = settings ?? contact;
+  const footerInfo = settings?.footer;
+
   return (
     <footer className="relative overflow-hidden bg-forest-deep text-white/75">
       <LeafMark className="absolute -bottom-10 -right-8 size-64 text-white/[0.035] lg:size-80" />
@@ -288,13 +306,14 @@ export function Footer() {
         <div>
           <Brand className="h-14" />
           <p className="mt-6 max-w-xs text-[0.9375rem] leading-relaxed">
-            Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana.
+            {footerInfo?.tagline ||
+              "Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana."}
           </p>
         </div>
         <div>
           <p className="text-sm font-semibold text-white">Products</p>
           <ul className="mt-5 space-y-3 text-[0.9375rem]">
-            {categories.map((category) => (
+            {categoryList.map((category) => (
               <li key={category.slug}>
                 <Link
                   to="/products/$category"
@@ -328,9 +347,9 @@ export function Footer() {
           <ul className="mt-5 space-y-4 text-[0.9375rem] leading-relaxed">
             <li className="flex gap-3">
               <MapPin className="mt-1 size-4 shrink-0 text-gold" />
-              {contact.address}
+              {companyInfo.address}
             </li>
-            {contact.emails.map((email) => (
+            {companyInfo.emails.map((email) => (
               <li key={email} className="flex gap-3">
                 <Mail className="mt-1 size-4 shrink-0 text-gold" />
                 <a href={`mailto:${email}`} className="hover:text-white">
@@ -340,15 +359,17 @@ export function Footer() {
             ))}
             <li className="flex gap-3">
               <Clock className="mt-1 size-4 shrink-0 text-gold" />
-              {contact.hours}
+              {companyInfo.hours}
             </li>
           </ul>
         </div>
       </div>
       <div className="relative border-t border-white/10">
         <div className="site-container flex flex-col gap-2 py-6 text-[0.8125rem] text-white/50 sm:flex-row sm:justify-between">
-          <span>© {new Date().getFullYear()} Acoflex</span>
-          <span>Made in India</span>
+          <span>
+            © {new Date().getFullYear()} {footerInfo?.copyright || "Acoflex"}
+          </span>
+          <span>{footerInfo?.origin || "Made in India"}</span>
         </div>
       </div>
     </footer>
