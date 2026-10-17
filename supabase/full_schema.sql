@@ -621,12 +621,21 @@ VALUES
   '{
     "company": "Saiyanm Industries Pvt. Ltd.",
     "address": "Vill Simbla (Behind Hanuman Mandir), P.O., Teh. Barara, Distt. Ambala, Haryana 133201, India",
-    "emails": ["contact@acoflexpvc.com", "info@acoflexpvc.com"],
+    "phone": "+91 79762 63302",
+    "emails": ["acoflexpvc@gmail.com"],
     "hours": "Monday–Saturday, 8:00–17:30",
     "notice_bar": {
       "location": "Barara, Ambala, Haryana",
+      "phone": "+91 79762 63302",
       "hours": "Monday–Saturday, 8:00–17:30",
-      "email": "contact@acoflexpvc.com"
+      "email": "acoflexpvc@gmail.com"
+    },
+    "social_links": {
+      "whatsapp": "https://wa.me/917976263302",
+      "youtube": "https://www.youtube.com/channel/UCwyCcoI6ttDIM3TsK_W3OGQ",
+      "facebook": "https://www.facebook.com/profile.php?id=61595401024633",
+      "linkedin": "https://www.linkedin.com/in/acoflex-pvc-72094a444/",
+      "instagram": "https://www.instagram.com/acoflexpvc/?hl=en"
     },
     "footer": {
       "tagline": "Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana.",
@@ -642,12 +651,21 @@ VALUES
   '{
     "company": "Saiyanm Industries Pvt. Ltd.",
     "address": "Vill Simbla (Behind Hanuman Mandir), P.O., Teh. Barara, Distt. Ambala, Haryana 133201, India",
-    "emails": ["contact@acoflexpvc.com", "info@acoflexpvc.com"],
+    "phone": "+91 79762 63302",
+    "emails": ["acoflexpvc@gmail.com"],
     "hours": "Monday–Saturday, 8:00–17:30",
     "notice_bar": {
       "location": "Barara, Ambala, Haryana",
+      "phone": "+91 79762 63302",
       "hours": "Monday–Saturday, 8:00–17:30",
-      "email": "contact@acoflexpvc.com"
+      "email": "acoflexpvc@gmail.com"
+    },
+    "social_links": {
+      "whatsapp": "https://wa.me/917976263302",
+      "youtube": "https://www.youtube.com/channel/UCwyCcoI6ttDIM3TsK_W3OGQ",
+      "facebook": "https://www.facebook.com/profile.php?id=61595401024633",
+      "linkedin": "https://www.linkedin.com/in/acoflex-pvc-72094a444/",
+      "instagram": "https://www.instagram.com/acoflexpvc/?hl=en"
     },
     "footer": {
       "tagline": "Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana.",

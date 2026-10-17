@@ -20,12 +20,21 @@ import { resolveMediaUrl } from "@/lib/media";
 export interface PublishedSiteSettings {
   company: string;
   address: string;
+  phone?: string;
   emails: string[];
   hours: string;
   notice_bar?: {
     location?: string;
     hours?: string;
     email?: string;
+    phone?: string;
+  };
+  social_links?: {
+    whatsapp?: string;
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+    youtube?: string;
   };
   footer?: {
     tagline?: string;
@@ -46,6 +55,26 @@ export interface PublishedPageContent {
  * Fetchers
  * ------------------------------------------------------------------ */
 
+function sanitizeEmail(email?: string): string {
+  if (!email || typeof email !== "string") return "acoflexpvc@gmail.com";
+  const trimmed = email.trim();
+  if (trimmed.toLowerCase().includes("acoflexpvc.com")) {
+    return "acoflexpvc@gmail.com";
+  }
+  return trimmed;
+}
+
+function sanitizeEmails(emails?: string[]): string[] {
+  if (!Array.isArray(emails) || emails.length === 0) {
+    return ["acoflexpvc@gmail.com"];
+  }
+  const filtered = emails
+    .map((e) => (typeof e === "string" ? sanitizeEmail(e) : ""))
+    .filter(Boolean);
+  const unique = Array.from(new Set(filtered));
+  return unique.length > 0 ? unique : ["acoflexpvc@gmail.com"];
+}
+
 /**
  * Fetch published site settings from Supabase, falling back to static site data.
  */
@@ -53,12 +82,21 @@ export async function fetchPublishedSiteSettings(): Promise<PublishedSiteSetting
   const fallback: PublishedSiteSettings = {
     company: fallbackContact.company,
     address: fallbackContact.address,
+    phone: fallbackContact.phone,
     emails: [...fallbackContact.emails],
     hours: fallbackContact.hours,
     notice_bar: {
       location: "Barara, Ambala, Haryana",
       hours: fallbackContact.hours,
       email: fallbackContact.emails[0],
+      phone: fallbackContact.phone,
+    },
+    social_links: {
+      whatsapp: fallbackContact.socialLinks.whatsapp,
+      facebook: fallbackContact.socialLinks.facebook,
+      instagram: fallbackContact.socialLinks.instagram,
+      linkedin: fallbackContact.socialLinks.linkedin,
+      youtube: fallbackContact.socialLinks.youtube,
     },
     footer: {
       tagline: "Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana.",
@@ -86,15 +124,28 @@ export async function fetchPublishedSiteSettings(): Promise<PublishedSiteSetting
     }
 
     const d = data.data as Partial<PublishedSiteSettings>;
+    const rawEmails = Array.isArray(d.emails) && d.emails.length > 0 ? d.emails : fallback.emails;
+    const sanitizedEmails = sanitizeEmails(rawEmails);
+    const noticeEmail = sanitizeEmail(d.notice_bar?.email || fallback.notice_bar?.email);
+
     return {
       company: d.company || fallback.company,
       address: d.address || fallback.address,
-      emails: Array.isArray(d.emails) && d.emails.length > 0 ? d.emails : fallback.emails,
+      phone: d.phone || fallback.phone,
+      emails: sanitizedEmails,
       hours: d.hours || fallback.hours,
       notice_bar: {
         location: d.notice_bar?.location || fallback.notice_bar?.location,
         hours: d.notice_bar?.hours || fallback.notice_bar?.hours,
-        email: d.notice_bar?.email || fallback.notice_bar?.email,
+        email: noticeEmail,
+        phone: d.notice_bar?.phone || fallback.notice_bar?.phone,
+      },
+      social_links: {
+        whatsapp: d.social_links?.whatsapp ?? fallback.social_links?.whatsapp,
+        facebook: d.social_links?.facebook ?? fallback.social_links?.facebook,
+        instagram: d.social_links?.instagram ?? fallback.social_links?.instagram,
+        linkedin: d.social_links?.linkedin ?? fallback.social_links?.linkedin,
+        youtube: d.social_links?.youtube ?? fallback.social_links?.youtube,
       },
       footer: {
         tagline: d.footer?.tagline || fallback.footer?.tagline,
@@ -311,12 +362,21 @@ export function usePublishedSiteSettings() {
     placeholderData: {
       company: fallbackContact.company,
       address: fallbackContact.address,
+      phone: fallbackContact.phone,
       emails: [...fallbackContact.emails],
       hours: fallbackContact.hours,
       notice_bar: {
         location: "Barara, Ambala, Haryana",
         hours: fallbackContact.hours,
         email: fallbackContact.emails[0],
+        phone: fallbackContact.phone,
+      },
+      social_links: {
+        whatsapp: fallbackContact.socialLinks.whatsapp,
+        facebook: fallbackContact.socialLinks.facebook,
+        instagram: fallbackContact.socialLinks.instagram,
+        linkedin: fallbackContact.socialLinks.linkedin,
+        youtube: fallbackContact.socialLinks.youtube,
       },
       footer: {
         tagline: "Plumbing, drainage and agriculture pipe systems manufactured in Ambala, Haryana.",

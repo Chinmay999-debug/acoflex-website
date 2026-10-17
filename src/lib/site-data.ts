@@ -453,10 +453,28 @@ export const services = [
   "Dealer and distributor supply",
 ];
 
+export type SocialLinks = {
+  whatsapp?: string;
+  facebook?: string;
+  instagram?: string;
+  linkedin?: string;
+  youtube?: string;
+};
+
 export const contact = {
   company: "Saiyanm Industries Pvt. Ltd.",
   address:
     "Vill Simbla (Behind Hanuman Mandir), P.O., Teh. Barara, Distt. Ambala, Haryana 133201, India",
-  emails: ["contact@acoflexpvc.com", "info@acoflexpvc.com"],
+  phone: "+91 79762 63302",
+  phoneRaw: "7976263302",
+  whatsapp: "https://wa.me/917976263302",
+  emails: ["acoflexpvc@gmail.com"],
   hours: "Monday–Saturday, 8:00–17:30",
+  socialLinks: {
+    whatsapp: "https://wa.me/917976263302",
+    youtube: "https://www.youtube.com/channel/UCwyCcoI6ttDIM3TsK_W3OGQ",
+    facebook: "https://www.facebook.com/profile.php?id=61595401024633",
+    linkedin: "https://www.linkedin.com/in/acoflex-pvc-72094a444/",
+    instagram: "https://www.instagram.com/acoflexpvc/?hl=en",
+  },
 };

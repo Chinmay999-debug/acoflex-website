@@ -16,6 +16,8 @@ import {
   MapPin,
   Mail,
   Building,
+  Phone,
+  Share2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/settings")({
@@ -32,11 +34,20 @@ interface SiteSettingsData {
   company?: string;
   address?: string;
   hours?: string;
+  phone?: string;
   emails?: string[];
   notice_bar?: {
     location?: string;
     hours?: string;
     email?: string;
+    phone?: string;
+  };
+  social_links?: {
+    whatsapp?: string;
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+    youtube?: string;
   };
   footer?: {
     tagline?: string;
@@ -94,9 +105,52 @@ function AdminSiteSettings() {
   useEffect(() => {
     if (settingsRecord?.data) {
       const data = settingsRecord.data as SiteSettingsData;
-      setFormData(data);
-      setInitialData(data);
-      const eStr = Array.isArray(data.emails) ? data.emails.join(", ") : "";
+
+      // Sanitize old deprecated emails from database record
+      const rawList = Array.isArray(data.emails) ? data.emails : [];
+      const sanitizedEmails = rawList
+        .map((e) =>
+          typeof e === "string" && e.toLowerCase().includes("acoflexpvc.com")
+            ? "acoflexpvc@gmail.com"
+            : typeof e === "string"
+              ? e.trim()
+              : "",
+        )
+        .filter(Boolean);
+      const uniqueEmails = Array.from(new Set(sanitizedEmails));
+      const finalEmails = uniqueEmails.length > 0 ? uniqueEmails : ["acoflexpvc@gmail.com"];
+
+      const rawNoticeEmail = data.notice_bar?.email;
+      const sanitizedNoticeEmail =
+        !rawNoticeEmail || rawNoticeEmail.toLowerCase().includes("acoflexpvc.com")
+          ? "acoflexpvc@gmail.com"
+          : rawNoticeEmail.trim();
+
+      const cleanedData: SiteSettingsData = {
+        ...data,
+        emails: finalEmails,
+        phone: data.phone || "+91 79762 63302",
+        notice_bar: {
+          ...data.notice_bar,
+          email: sanitizedNoticeEmail,
+          phone: data.notice_bar?.phone || "+91 79762 63302",
+        },
+        social_links: {
+          whatsapp: data.social_links?.whatsapp || "https://wa.me/917976263302",
+          youtube:
+            data.social_links?.youtube ||
+            "https://www.youtube.com/channel/UCwyCcoI6ttDIM3TsK_W3OGQ",
+          facebook:
+            data.social_links?.facebook || "https://www.facebook.com/profile.php?id=61595401024633",
+          linkedin:
+            data.social_links?.linkedin || "https://www.linkedin.com/in/acoflex-pvc-72094a444/",
+          instagram: data.social_links?.instagram || "https://www.instagram.com/acoflexpvc/?hl=en",
+        },
+      };
+
+      setFormData(cleanedData);
+      setInitialData(cleanedData);
+      const eStr = finalEmails.join(", ");
       setEmailsRaw(eStr);
       setInitialEmailsRaw(eStr);
     }
@@ -358,7 +412,7 @@ function AdminSiteSettings() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="notice-location">City / Location Label</Label>
               <Input
@@ -371,6 +425,21 @@ function AdminSiteSettings() {
                   })
                 }
                 placeholder="Barara, Ambala, Haryana"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="notice-phone">Direct Phone</Label>
+              <Input
+                id="notice-phone"
+                value={formData.notice_bar?.phone || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    notice_bar: { ...formData.notice_bar, phone: e.target.value },
+                  })
+                }
+                placeholder="+91 79762 63302"
               />
             </div>
 
@@ -401,7 +470,7 @@ function AdminSiteSettings() {
                     notice_bar: { ...formData.notice_bar, email: e.target.value },
                   })
                 }
-                placeholder="contact@acoflexpvc.com"
+                placeholder="acoflexpvc@gmail.com"
               />
             </div>
           </div>
@@ -419,7 +488,7 @@ function AdminSiteSettings() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="company-name">Company Legal Name</Label>
               <Input
@@ -427,6 +496,16 @@ function AdminSiteSettings() {
                 value={formData.company || ""}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 placeholder="Saiyanm Industries Pvt. Ltd."
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="company-phone">Direct Business Phone</Label>
+              <Input
+                id="company-phone"
+                value={formData.phone || ""}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="+91 79762 63302"
               />
             </div>
 
@@ -447,7 +526,7 @@ function AdminSiteSettings() {
               id="emails-list"
               value={emailsRaw}
               onChange={(e) => setEmailsRaw(e.target.value)}
-              placeholder="contact@acoflexpvc.com, info@acoflexpvc.com"
+              placeholder="acoflexpvc@gmail.com"
             />
           </div>
 
@@ -460,6 +539,102 @@ function AdminSiteSettings() {
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               placeholder="Vill Simbla (Behind Hanuman Mandir), P.O., Teh. Barara, Distt. Ambala, Haryana 133201, India"
             />
+          </div>
+        </div>
+
+        {/* Social Media Channels */}
+        <div className="rounded-xl border border-border bg-card p-6 shadow-xs space-y-4">
+          <div className="border-b border-border pb-3">
+            <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+              <Share2 className="size-4.5 text-primary" />
+              Social Media Channels & Profiles
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Official links displayed in the website footer, contact drawer, and contact page.
+              Leaving a field blank hides that icon.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5 md:col-span-2">
+              <Label htmlFor="social-whatsapp">WhatsApp Chat Link or Number</Label>
+              <Input
+                id="social-whatsapp"
+                type="url"
+                value={formData.social_links?.whatsapp || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    social_links: { ...formData.social_links, whatsapp: e.target.value },
+                  })
+                }
+                placeholder="https://wa.me/917976263302"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="social-youtube">YouTube Channel URL</Label>
+              <Input
+                id="social-youtube"
+                type="url"
+                value={formData.social_links?.youtube || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    social_links: { ...formData.social_links, youtube: e.target.value },
+                  })
+                }
+                placeholder="https://www.youtube.com/channel/UCwyCcoI6ttDIM3TsK_W3OGQ"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="social-facebook">Facebook Page URL</Label>
+              <Input
+                id="social-facebook"
+                type="url"
+                value={formData.social_links?.facebook || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    social_links: { ...formData.social_links, facebook: e.target.value },
+                  })
+                }
+                placeholder="https://www.facebook.com/profile.php?id=61595401024633"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="social-linkedin">LinkedIn Profile URL</Label>
+              <Input
+                id="social-linkedin"
+                type="url"
+                value={formData.social_links?.linkedin || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    social_links: { ...formData.social_links, linkedin: e.target.value },
+                  })
+                }
+                placeholder="https://www.linkedin.com/in/acoflex-pvc-72094a444/"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="social-instagram">Instagram Profile URL</Label>
+              <Input
+                id="social-instagram"
+                type="url"
+                value={formData.social_links?.instagram || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    social_links: { ...formData.social_links, instagram: e.target.value },
+                  })
+                }
+                placeholder="https://www.instagram.com/acoflexpvc/?hl=en"
+              />
+            </div>
           </div>
         </div>
 

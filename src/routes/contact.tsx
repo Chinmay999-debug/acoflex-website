@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Clock, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { PageHero } from "@/components/site";
+import { PageHero, SocialLinksRow, WhatsAppIcon } from "@/components/site";
 import { contact as fallbackContact } from "@/lib/site-data";
 import { usePublishedPageContent, usePublishedSiteSettings } from "@/hooks/use-site-content";
 
@@ -47,6 +47,8 @@ function Contact() {
   const { data: settings } = usePublishedSiteSettings();
 
   const contact = settings ?? fallbackContact;
+  const phone = settings?.phone || fallbackContact.phone;
+  const socialLinks = settings?.social_links ?? fallbackContact.socialLinks;
   const content = pageData?.content;
   const heroTitle = content?.hero?.title || "Contact us";
   const heroIntro =
@@ -180,6 +182,36 @@ function Contact() {
                   {contact.address}
                 </span>
               </li>
+              {phone && (
+                <li className="flex gap-3.5">
+                  <Phone className="mt-1 size-4 shrink-0 text-gold" />
+                  <div className="space-y-1.5">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <a
+                        href={`tel:${phone.replace(/\s+/g, "")}`}
+                        className="font-medium text-white hover:text-gold hover:underline"
+                      >
+                        {phone}
+                      </a>
+                      {socialLinks?.whatsapp && (
+                        <a
+                          href={socialLinks.whatsapp}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Chat with Acoflex on WhatsApp"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/25 hover:text-emerald-200"
+                        >
+                          <WhatsAppIcon className="size-3.5" />
+                          Chat on WhatsApp
+                        </a>
+                      )}
+                    </div>
+                    <span className="block text-xs text-white/60">
+                      Call or WhatsApp our factory / sales desk
+                    </span>
+                  </div>
+                </li>
+              )}
               <li className="flex gap-3.5">
                 <Mail className="mt-1 size-4 shrink-0 text-gold" />
                 <span className="flex flex-col">
@@ -203,6 +235,15 @@ function Contact() {
                 </span>
               </li>
             </ul>
+
+            <div className="mt-8 border-t border-white/10 pt-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">
+                Official Channels & Social Media
+              </p>
+              <div className="mt-3">
+                <SocialLinksRow links={socialLinks} />
+              </div>
+            </div>
           </div>
           <div className="overflow-hidden rounded-md border border-border">
             <iframe
