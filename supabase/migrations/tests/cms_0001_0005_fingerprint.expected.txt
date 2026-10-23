@@ -1,0 +1,199 @@
+# Expected output of cms_0001_0005_fingerprint.sql on a fresh local database built from migrations 0001-0005
+# Generated 2026-10-23 with Supabase CLI 2.120.0 / local Postgres image. server_version and table_privileges are informational.
+# Format: kind | category | item (count for summary) | detail (md5 for summary)
+summary | bucket | 1 | e131d1000c64d296b01939be97cec9ee
+summary | columns | 69 | d36ec844ddfcc7454a4d63beb9087c28
+summary | constraints | 21 | b201844b6796f578495933a0ace61f62
+summary | function_execute | 5 | 21ae6251ef9ff959b9eadd7eb53623f3
+summary | functions | 5 | 73eedc17a827af543b33d5e9d65adc3f
+summary | indexes | 21 | 39a4bbad8281f514968b87bc4acae30b
+summary | policies | 21 | 84b9a1835e4f691da0f86b92e8e7e4a8
+summary | rls | 8 | bf1b45be12e0172da26f991be7f8c2a2
+summary | server_version | 1 | 01439b06040202771a97cfddfef07409
+summary | table_privileges | 16 | 94a506b5e7261bf211566a9dafc2d84e
+summary | tables | 8 | dc36be38cb707c46ac48837601e75fe5
+summary | triggers | 8 | 9983495704b60b11275c62c5e4809479
+detail | bucket | website-media | public=true file_size_limit=5242880 mime=image/webp,image/jpeg,image/png
+detail | columns | admin_users.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | admin_users.email | text notnull=true default=
+detail | columns | admin_users.id | uuid notnull=true default=
+detail | columns | admin_users.role | text notnull=true default='admin'::text
+detail | columns | admin_users.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | media_assets.alt_text | text notnull=false default=
+detail | columns | media_assets.bucket_id | text notnull=true default='website-media'::text
+detail | columns | media_assets.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | media_assets.file_path | text notnull=true default=
+detail | columns | media_assets.file_size | integer notnull=true default=
+detail | columns | media_assets.filename | text notnull=true default=
+detail | columns | media_assets.id | uuid notnull=true default=gen_random_uuid()
+detail | columns | media_assets.mime_type | text notnull=true default=
+detail | columns | media_assets.public_url | text notnull=true default=
+detail | columns | media_assets.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | page_content.content | jsonb notnull=true default='{}'::jsonb
+detail | columns | page_content.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | page_content.id | uuid notnull=true default=gen_random_uuid()
+detail | columns | page_content.page_slug | text notnull=true default=
+detail | columns | page_content.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | page_content.version | text notnull=true default=
+detail | columns | pages.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | pages.has_unpublished_changes | boolean notnull=true default=false
+detail | columns | pages.published_at | timestamp with time zone notnull=false default=
+detail | columns | pages.slug | text notnull=true default=
+detail | columns | pages.title | text notnull=true default=
+detail | columns | pages.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | product_categories.banner_url | text notnull=true default=
+detail | columns | product_categories.coming_soon | boolean notnull=true default=false
+detail | columns | product_categories.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | product_categories.description | text notnull=true default=
+detail | columns | product_categories.id | uuid notnull=true default=gen_random_uuid()
+detail | columns | product_categories.image_alt | text notnull=false default=
+detail | columns | product_categories.image_url | text notnull=false default=
+detail | columns | product_categories.is_published | boolean notnull=true default=true
+detail | columns | product_categories.name | text notnull=true default=
+detail | columns | product_categories.slug | text notnull=true default=
+detail | columns | product_categories.sort_order | integer notnull=true default=0
+detail | columns | product_categories.summary | text notnull=true default=
+detail | columns | product_categories.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | product_drafts.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | product_drafts.draft_data | jsonb notnull=true default=
+detail | columns | product_drafts.product_id | uuid notnull=true default=
+detail | columns | product_drafts.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | products.applications | text[] notnull=true default='{}'::text[]
+detail | columns | products.category_id | uuid notnull=true default=
+detail | columns | products.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | products.facts | jsonb notnull=true default='[]'::jsonb
+detail | columns | products.full_name | text notnull=true default=
+detail | columns | products.highlights | text[] notnull=true default='{}'::text[]
+detail | columns | products.id | uuid notnull=true default=gen_random_uuid()
+detail | columns | products.image_alt | text notnull=true default=
+detail | columns | products.image_type | text notnull=true default=
+detail | columns | products.image_url | text notnull=true default=
+detail | columns | products.is_published | boolean notnull=true default=true
+detail | columns | products.name | text notnull=true default=
+detail | columns | products.overview | text notnull=true default=
+detail | columns | products.range_groups | jsonb notnull=false default='[]'::jsonb
+detail | columns | products.slug | text notnull=true default=
+detail | columns | products.sort_order | integer notnull=true default=0
+detail | columns | products.summary | text notnull=true default=
+detail | columns | products.system | text notnull=true default=
+detail | columns | products.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | site_settings.created_at | timestamp with time zone notnull=true default=now()
+detail | columns | site_settings.data | jsonb notnull=true default='{}'::jsonb
+detail | columns | site_settings.published_at | timestamp with time zone notnull=false default=
+detail | columns | site_settings.setting_key | text notnull=true default='global'::text
+detail | columns | site_settings.updated_at | timestamp with time zone notnull=true default=now()
+detail | columns | site_settings.version | text notnull=true default=
+detail | constraints | admin_users.admin_users_email_key | UNIQUE (email)
+detail | constraints | admin_users.admin_users_id_fkey | FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE
+detail | constraints | admin_users.admin_users_pkey | PRIMARY KEY (id)
+detail | constraints | admin_users.admin_users_role_check | CHECK ((role = 'admin'::text))
+detail | constraints | media_assets.media_assets_file_path_key | UNIQUE (file_path)
+detail | constraints | media_assets.media_assets_pkey | PRIMARY KEY (id)
+detail | constraints | page_content.page_content_page_slug_fkey | FOREIGN KEY (page_slug) REFERENCES pages(slug) ON DELETE CASCADE
+detail | constraints | page_content.page_content_pkey | PRIMARY KEY (id)
+detail | constraints | page_content.page_content_version_check | CHECK ((version = ANY (ARRAY['published'::text, 'draft'::text])))
+detail | constraints | page_content.uq_page_slug_version | UNIQUE (page_slug, version)
+detail | constraints | pages.pages_pkey | PRIMARY KEY (slug)
+detail | constraints | product_categories.product_categories_pkey | PRIMARY KEY (id)
+detail | constraints | product_categories.product_categories_slug_key | UNIQUE (slug)
+detail | constraints | product_drafts.product_drafts_pkey | PRIMARY KEY (product_id)
+detail | constraints | product_drafts.product_drafts_product_id_fkey | FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+detail | constraints | products.products_category_id_fkey | FOREIGN KEY (category_id) REFERENCES product_categories(id) ON DELETE RESTRICT
+detail | constraints | products.products_image_type_check | CHECK ((image_type = ANY (ARRAY['representative'::text, 'manufacturing'::text])))
+detail | constraints | products.products_pkey | PRIMARY KEY (id)
+detail | constraints | products.products_slug_key | UNIQUE (slug)
+detail | constraints | site_settings.site_settings_pkey | PRIMARY KEY (setting_key, version)
+detail | constraints | site_settings.site_settings_version_check | CHECK ((version = ANY (ARRAY['published'::text, 'draft'::text])))
+detail | function_execute | handle_updated_at() | anon=false authenticated=false
+detail | function_execute | is_admin() | anon=false authenticated=true
+detail | function_execute | publish_page(target_slug text) | anon=false authenticated=true
+detail | function_execute | publish_product(target_product_id uuid) | anon=false authenticated=true
+detail | function_execute | publish_site_settings(target_key text) | anon=false authenticated=true
+detail | functions | handle_updated_at() | returns=trigger lang=plpgsql secdef=false volatility=v config=search_path="" body_md5=301a884953d37769916294bb60562e05
+detail | functions | is_admin() | returns=boolean lang=sql secdef=true volatility=s config=search_path="" body_md5=1bb1952747723e33004b6de2e9294e0c
+detail | functions | publish_page(target_slug text) | returns=void lang=plpgsql secdef=true volatility=v config=search_path="" body_md5=40b25d0a960b0a6cc6bef5de51dbd04c
+detail | functions | publish_product(target_product_id uuid) | returns=void lang=plpgsql secdef=true volatility=v config=search_path="" body_md5=ddd3fbc8eccba82424e280886a8754cf
+detail | functions | publish_site_settings(target_key text) | returns=void lang=plpgsql secdef=true volatility=v config=search_path="" body_md5=d855e0f8fdbba55c6358421da3741cb5
+detail | indexes | admin_users.admin_users_email_key | CREATE UNIQUE INDEX admin_users_email_key ON public.admin_users USING btree (email)
+detail | indexes | admin_users.admin_users_pkey | CREATE UNIQUE INDEX admin_users_pkey ON public.admin_users USING btree (id)
+detail | indexes | media_assets.idx_media_assets_file_path | CREATE INDEX idx_media_assets_file_path ON public.media_assets USING btree (file_path)
+detail | indexes | media_assets.media_assets_file_path_key | CREATE UNIQUE INDEX media_assets_file_path_key ON public.media_assets USING btree (file_path)
+detail | indexes | media_assets.media_assets_pkey | CREATE UNIQUE INDEX media_assets_pkey ON public.media_assets USING btree (id)
+detail | indexes | page_content.idx_page_content_lookup | CREATE INDEX idx_page_content_lookup ON public.page_content USING btree (page_slug, version)
+detail | indexes | page_content.page_content_pkey | CREATE UNIQUE INDEX page_content_pkey ON public.page_content USING btree (id)
+detail | indexes | page_content.uq_page_slug_version | CREATE UNIQUE INDEX uq_page_slug_version ON public.page_content USING btree (page_slug, version)
+detail | indexes | pages.pages_pkey | CREATE UNIQUE INDEX pages_pkey ON public.pages USING btree (slug)
+detail | indexes | product_categories.idx_product_categories_order | CREATE INDEX idx_product_categories_order ON public.product_categories USING btree (sort_order)
+detail | indexes | product_categories.idx_product_categories_slug | CREATE INDEX idx_product_categories_slug ON public.product_categories USING btree (slug)
+detail | indexes | product_categories.product_categories_pkey | CREATE UNIQUE INDEX product_categories_pkey ON public.product_categories USING btree (id)
+detail | indexes | product_categories.product_categories_slug_key | CREATE UNIQUE INDEX product_categories_slug_key ON public.product_categories USING btree (slug)
+detail | indexes | product_drafts.product_drafts_pkey | CREATE UNIQUE INDEX product_drafts_pkey ON public.product_drafts USING btree (product_id)
+detail | indexes | products.idx_products_category_id | CREATE INDEX idx_products_category_id ON public.products USING btree (category_id)
+detail | indexes | products.idx_products_order | CREATE INDEX idx_products_order ON public.products USING btree (sort_order)
+detail | indexes | products.idx_products_published | CREATE INDEX idx_products_published ON public.products USING btree (is_published)
+detail | indexes | products.idx_products_slug | CREATE INDEX idx_products_slug ON public.products USING btree (slug)
+detail | indexes | products.products_pkey | CREATE UNIQUE INDEX products_pkey ON public.products USING btree (id)
+detail | indexes | products.products_slug_key | CREATE UNIQUE INDEX products_slug_key ON public.products USING btree (slug)
+detail | indexes | site_settings.site_settings_pkey | CREATE UNIQUE INDEX site_settings_pkey ON public.site_settings USING btree (setting_key, version)
+detail | policies | public.admin_users.Admins can delete admin_users | DELETE permissive=PERMISSIVE roles=authenticated using=is_admin() check=
+detail | policies | public.admin_users.Admins can insert admin_users | INSERT permissive=PERMISSIVE roles=authenticated using= check=is_admin()
+detail | policies | public.admin_users.Admins can update admin_users | UPDATE permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.admin_users.Admins can view admin_users | SELECT permissive=PERMISSIVE roles=authenticated using=is_admin() check=
+detail | policies | public.media_assets.Admins full access to media assets | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.media_assets.Public read media assets | SELECT permissive=PERMISSIVE roles=public using=true check=
+detail | policies | public.page_content.Admins full access to page content | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.page_content.Public read published page content | SELECT permissive=PERMISSIVE roles=public using=(version = 'published'::text) check=
+detail | policies | public.pages.Admins full access to pages registry | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.pages.Public read pages registry | SELECT permissive=PERMISSIVE roles=public using=true check=
+detail | policies | public.product_categories.Admins full access to categories | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.product_categories.Public read published categories | SELECT permissive=PERMISSIVE roles=public using=(is_published = true) check=
+detail | policies | public.product_drafts.Admins full access to product drafts | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.products.Admins full access to products | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.products.Public read published products | SELECT permissive=PERMISSIVE roles=public using=(is_published = true) check=
+detail | policies | public.site_settings.Admins full access to site settings | ALL permissive=PERMISSIVE roles=authenticated using=is_admin() check=is_admin()
+detail | policies | public.site_settings.Public read published site settings | SELECT permissive=PERMISSIVE roles=public using=(version = 'published'::text) check=
+detail | policies | storage.objects.Admins delete website media | DELETE permissive=PERMISSIVE roles=authenticated using=((bucket_id = 'website-media'::text) AND is_admin()) check=
+detail | policies | storage.objects.Admins update website media | UPDATE permissive=PERMISSIVE roles=authenticated using=((bucket_id = 'website-media'::text) AND is_admin()) check=((bucket_id = 'website-media'::text) AND is_admin())
+detail | policies | storage.objects.Admins upload website media | INSERT permissive=PERMISSIVE roles=authenticated using= check=((bucket_id = 'website-media'::text) AND is_admin())
+detail | policies | storage.objects.Public read website media bucket | SELECT permissive=PERMISSIVE roles=public using=(bucket_id = 'website-media'::text) check=
+detail | rls | admin_users | enabled=true forced=false
+detail | rls | media_assets | enabled=true forced=false
+detail | rls | page_content | enabled=true forced=false
+detail | rls | pages | enabled=true forced=false
+detail | rls | product_categories | enabled=true forced=false
+detail | rls | product_drafts | enabled=true forced=false
+detail | rls | products | enabled=true forced=false
+detail | rls | site_settings | enabled=true forced=false
+detail | server_version | server_version | 17.11
+detail | table_privileges | admin_users.anon | select=true insert=true update=true delete=true
+detail | table_privileges | admin_users.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | media_assets.anon | select=true insert=true update=true delete=true
+detail | table_privileges | media_assets.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | page_content.anon | select=true insert=true update=true delete=true
+detail | table_privileges | page_content.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | pages.anon | select=true insert=true update=true delete=true
+detail | table_privileges | pages.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | product_categories.anon | select=true insert=true update=true delete=true
+detail | table_privileges | product_categories.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | product_drafts.anon | select=true insert=true update=true delete=true
+detail | table_privileges | product_drafts.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | products.anon | select=true insert=true update=true delete=true
+detail | table_privileges | products.authenticated | select=true insert=true update=true delete=true
+detail | table_privileges | site_settings.anon | select=true insert=true update=true delete=true
+detail | table_privileges | site_settings.authenticated | select=true insert=true update=true delete=true
+detail | tables | admin_users | present
+detail | tables | media_assets | present
+detail | tables | page_content | present
+detail | tables | pages | present
+detail | tables | product_categories | present
+detail | tables | product_drafts | present
+detail | tables | products | present
+detail | tables | site_settings | present
+detail | triggers | admin_users.set_admin_users_updated_at | CREATE TRIGGER set_admin_users_updated_at BEFORE UPDATE ON public.admin_users FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | media_assets.set_media_assets_updated_at | CREATE TRIGGER set_media_assets_updated_at BEFORE UPDATE ON public.media_assets FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | page_content.set_page_content_updated_at | CREATE TRIGGER set_page_content_updated_at BEFORE UPDATE ON public.page_content FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | pages.set_pages_updated_at | CREATE TRIGGER set_pages_updated_at BEFORE UPDATE ON public.pages FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | product_categories.set_product_categories_updated_at | CREATE TRIGGER set_product_categories_updated_at BEFORE UPDATE ON public.product_categories FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | product_drafts.set_product_drafts_updated_at | CREATE TRIGGER set_product_drafts_updated_at BEFORE UPDATE ON public.product_drafts FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | products.set_products_updated_at | CREATE TRIGGER set_products_updated_at BEFORE UPDATE ON public.products FOR EACH ROW EXECUTE FUNCTION handle_updated_at()
+detail | triggers | site_settings.set_site_settings_updated_at | CREATE TRIGGER set_site_settings_updated_at BEFORE UPDATE ON public.site_settings FOR EACH ROW EXECUTE FUNCTION handle_updated_at()

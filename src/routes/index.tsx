@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CategoryCard, EnquiryBand, SectionHeading } from "@/components/site";
+import { HeroSlider } from "@/components/hero/HeroSlider";
 import {
   allProducts as fallbackAllProducts,
   categories as fallbackCategories,
@@ -114,59 +115,64 @@ function Index() {
   const highlightSteps = processSteps.slice(3);
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-forest text-white">
-        {/* Desktop and mobile heroes each use a 1px placeholder outside their breakpoint so only one photo downloads. */}
-        <picture className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
-          <source media="(min-width: 1024px)" srcSet={images.factoryWide} />
-          <img
-            src={BLANK_GIF}
-            alt="Acoflex pipe extrusion lines on the factory floor"
-            fetchPriority="high"
-            className="photo opacity-90 [mask-image:linear-gradient(to_right,transparent,black_50%)]"
-          />
-        </picture>
-        {/* Below lg: the factory fills the hero behind the copy, under a left-to-right forest overlay. */}
-        <picture className="absolute inset-x-0 bottom-1 top-0 lg:hidden">
-          <source media="(min-width: 1024px)" srcSet={BLANK_GIF} />
-          <img
-            src={images.factoryHeroMobile}
-            alt=""
-            width={780}
-            height={975}
-            fetchPriority="high"
-            className="photo object-[60%_60%]"
-          />
-        </picture>
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--forest)_92%,transparent)_0%,color-mix(in_oklab,var(--forest)_78%,transparent)_60%,color-mix(in_oklab,var(--forest)_35%,transparent)_100%)] lg:hidden"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--forest)_55%,transparent)_0%,color-mix(in_oklab,var(--forest)_40%,transparent)_55%,transparent_80%)] lg:hidden"
-        />
-        <div className="site-container relative grid items-center pb-32 pt-12 sm:pb-40 sm:pt-16 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
-          <div className="lg:col-span-6">
-            <p className="kicker !text-white/80">{heroKicker}</p>
-            <h1 className="h-hero mt-6">{heroTitle}</h1>
-            <p className="lede mt-6 text-white/90 lg:text-white/75">{heroLede}</p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Button asChild variant="gold" size="lg">
-                <Link to={heroCtaPrimary.to || "/products"}>
-                  {heroCtaPrimary.label || "Explore products"} <ArrowRight />
-                </Link>
-              </Button>
-              <Button asChild variant="outlineLight" size="lg">
-                <Link to={heroCtaSecondary.to || "/contact"}>
-                  {heroCtaSecondary.label || "Contact sales"}
-                </Link>
-              </Button>
+      {/* Hero: published slides when available, otherwise the CMS-driven static hero. */}
+      <HeroSlider
+        pageHeading={heroTitle}
+        fallback={
+          <section className="relative overflow-hidden bg-forest text-white">
+            {/* Desktop and mobile heroes each use a 1px placeholder outside their breakpoint so only one photo downloads. */}
+            <picture className="absolute bottom-1 right-0 top-0 hidden w-[58%] lg:block">
+              <source media="(min-width: 1024px)" srcSet={images.factoryWide} />
+              <img
+                src={BLANK_GIF}
+                alt="Acoflex pipe extrusion lines on the factory floor"
+                fetchPriority="high"
+                className="photo opacity-90 [mask-image:linear-gradient(to_right,transparent,black_50%)]"
+              />
+            </picture>
+            {/* Below lg: the factory fills the hero behind the copy, under a left-to-right forest overlay. */}
+            <picture className="absolute inset-x-0 bottom-1 top-0 lg:hidden">
+              <source media="(min-width: 1024px)" srcSet={BLANK_GIF} />
+              <img
+                src={images.factoryHeroMobile}
+                alt=""
+                width={780}
+                height={975}
+                fetchPriority="high"
+                className="photo object-[60%_60%]"
+              />
+            </picture>
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--forest)_92%,transparent)_0%,color-mix(in_oklab,var(--forest)_78%,transparent)_60%,color-mix(in_oklab,var(--forest)_35%,transparent)_100%)] lg:hidden"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-1 top-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--forest)_55%,transparent)_0%,color-mix(in_oklab,var(--forest)_40%,transparent)_55%,transparent_80%)] lg:hidden"
+            />
+            <div className="site-container relative grid items-center pb-32 pt-12 sm:pb-40 sm:pt-16 lg:min-h-[38rem] lg:grid-cols-12 lg:py-24">
+              <div className="lg:col-span-6">
+                <p className="kicker !text-white/80">{heroKicker}</p>
+                <h1 className="h-hero mt-6">{heroTitle}</h1>
+                <p className="lede mt-6 text-white/90 lg:text-white/75">{heroLede}</p>
+                <div className="mt-9 flex flex-wrap gap-3">
+                  <Button asChild variant="gold" size="lg">
+                    <Link to={heroCtaPrimary.to || "/products"}>
+                      {heroCtaPrimary.label || "Explore products"} <ArrowRight />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outlineLight" size="lg">
+                    <Link to={heroCtaSecondary.to || "/contact"}>
+                      {heroCtaSecondary.label || "Contact sales"}
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="relative h-1 bg-gold" />
-      </section>
+            <div className="relative h-1 bg-gold" />
+          </section>
+        }
+      />
 
       {/* Strengths */}
       <section className="bg-forest-deep text-white">
